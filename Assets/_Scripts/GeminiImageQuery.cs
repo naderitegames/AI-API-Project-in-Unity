@@ -19,7 +19,8 @@ public class GeminiImageQuery : MonoBehaviour
     {
         //Gemini10ProVision,
         Gemini15Pro,
-        Gemini20Flash
+        Gemini20Flash,
+        TheFood
     }
 
     [SerializeField] private string apiKey; // Your Google Gemini API key
@@ -97,11 +98,13 @@ public class GeminiImageQuery : MonoBehaviour
             //case GeminiVisionModel.Gemini10ProVision:
             //return "gemini-1.0-pro-vision";
             case GeminiVisionModel.Gemini15Pro:
-                return "gemini-1.5-pro";
+                return "models/gemini-1.5-pro";
             case GeminiVisionModel.Gemini20Flash:
-                return "gemini-2.0-flash";
+                return "models/gemini-2.0-flash";
+            case GeminiVisionModel.TheFood:
+                return "tunedModels/the-food-recipes-urqsgwf8ejnd";
             default:
-                return "gemini-1.0-pro-vision"; // Default if something goes wrong
+                return "models/gemini-1.0-pro-vision"; // Default if something goes wrong
         }
     }
 
@@ -111,8 +114,8 @@ public class GeminiImageQuery : MonoBehaviour
         string base64Image = Convert.ToBase64String(imageBytes);
 
         string apiUrl =
-            $"https://generativelanguage.googleapis.com/v1beta/models/{GetModelName()}:generateContent?key={apiKey}";
-
+            $"https://generativelanguage.googleapis.com/v1beta/{GetModelName()}:generateContent?key={apiKey}";
+        print(apiUrl);
         string requestBody = $@"
         {{
           ""contents"": [
