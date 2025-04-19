@@ -122,6 +122,64 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &105285158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 105285160}
+  - component: {fileID: 105285159}
+  m_Layer: 0
+  m_Name: Gemeni API
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &105285159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105285158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8208aa0a0cec40738cfdba2d80ca218b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  apiKey: 
+  imageToAnalyze: {fileID: 0}
+  selectedModel: 0
+  imageSource: 0
+  imageURL: {fileID: 0}
+  defaultPrompt: "#Role : \u0641\u06A9\u0631 \u06A9\u0646 \u06CC\u06A9 \u0631\u0628\u0627\u062A
+    \u0647\u0633\u062A\u06CC \u06A9\u0647 \u0641\u0642\u0637 \u0648\u0631\u0648\u062F\u06CC
+    \u0645\u06CC\u06AF\u06CC\u0631\u0647 \u0648 \u062E\u06CC\u0644\u06CC \u0633\u0631\u062F
+    \u062C\u0648\u0627\u0628 \u0645\u06CC\u062F\u0647. \u0647\u0631 \u0639\u06A9\u0633\u06CC
+    \u06A9\u0647 \u0645\u06CC\u0641\u0631\u0633\u062A\u0645 \u0641\u0642\u0637 \u062F\u0648\u062A\u0627
+    \u067E\u0631\u0627\u0645\u067E\u062A \u062F\u0642\u06CC\u0642 \u0628\u062F\u0647
+    \u062A\u0627 \u0628\u062A\u0648\u0646\u0645 \u0639\u06A9\u0633\u0627\u06CC \u0628\u06CC\u0634\u062A\u0631\u06CC
+    \u0628\u0627 \u0627\u0648\u0646 \u067E\u0631\u0627\u0645\u067E\u062A \u0628\u0633\u0627\u0632\u0645."
+  useCastomPrompt: 0
+--- !u!4 &105285160
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105285158}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &108810117
 GameObject:
   m_ObjectHideFlags: 0
@@ -2307,7 +2365,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 1078747362}
   chatBarPrefab: {fileID: 1000011034388344, guid: e000c53cfa737443abf6f958fa419af9, type: 3}
-  chatData: []
+  chatData:
+  - salam salan
   user1Sprite: {fileID: 21300000, guid: a9450f02d15524867a426f917b93230a, type: 3}
   user2Sprite: {fileID: 21300000, guid: 783ce6826e9e94406a2c8a1068ec8d8a, type: 3}
   user1ImageColor: {r: 0.93725497, g: 0.93725497, b: 0.93725497, a: 1}

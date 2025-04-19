@@ -1,149 +1,190 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
-public class ChatManager : MonoBehaviour {
+public enum MessageSenderType
+{
+    User,
+    Bot
+}
 
-	public Transform content;
+public class ChatManager : MonoBehaviour
+{
+    public static ChatManager Instanse;
 
-	public GameObject chatBarPrefab;
+    public Transform content;
 
-	public List<string> chatData = new List<string>();
+    public GameObject chatBarPrefab;
 
-	public Sprite user1Sprite;
-	public Sprite user2Sprite;
+    public List<string> chatData = new List<string>();
 
-	public Color user1ImageColor;
-	public Color user2ImageColor;
+    public Sprite user1Sprite;
+    public Sprite user2Sprite;
 
-	public Sprite user1ChatBarSprite;
-	public Sprite user2ChatBarSprite;
+    public Color user1ImageColor;
+    public Color user2ImageColor;
 
-	public Color textColor;
-	public int fontSize;
+    public Sprite user1ChatBarSprite;
+    public Sprite user2ChatBarSprite;
 
-	private VerticalLayoutGroup verticalLayoutGroup;
+    public Color textColor;
+    public int fontSize;
 
-	public InputField inputField;
+    private VerticalLayoutGroup verticalLayoutGroup;
 
-	// ratio = heightinoriginalscreenheight/originalscreenheight
-	// Use this for initialization
-	void Start () {
-		string[] chats = new string[]{
-			"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-			"Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-			"It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-			"It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-			"Where does it come from?",
-			"Contrary to popular belief, Lorem Ipsum is not simply random text.",
-			"It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source."};
-		for(int i = 0; i < 10; i++) {
+    public InputField inputField;
 
-			if(Random.Range(0,2) == 0)
-				chatData.Add(chats[Random.Range(0,chats.Length)]+"~0");
-			else
-				chatData.Add(chats[Random.Range(0,chats.Length)]+"~1");
-		}
-
-		ShowUserMsg ();
-		verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
-	
-	}
-
-
-	public void ShowUserMsg () {
-		
-		for(int i = 0; i < chatData.Count; i++) {
-			StartCoroutine(ShowUserMsgCoroutine (chatData[i]));
-		}
-	}
-
-	public void SendMsgFromInputfield()
+    private void Awake()
     {
-        if (inputField && !string.IsNullOrWhiteSpace(inputField.text))
+        Instanse = this;
+    }
+
+    // ratio = heightinoriginalscreenheight/originalscreenheight
+    // Use this for initialization
+    void Start()
+    {
+        string[] chats = new string[]
         {
-			chatData.Clear();
-			chatData.Add (inputField.text + "~0");
-			StartCoroutine(ShowUserMsgCoroutine(chatData[0]));
-			inputField.text = "";
-		}
+            "سلام",
+            "امروز چه غذایی برامون آوردی؟"
+        };
+        foreach (var messagesOfBot in chats)
+        {
+            chatData.Add(chats[Random.Range(0, chats.Length)] + "~0");
+        }
+
+        /*for (int i = 0; i < 10; i++)
+        {
+            if (Random.Range(0, 2) == 0)
+                chatData.Add(chats[Random.Range(0, chats.Length)] + "~0");
+            else
+                chatData.Add(chats[Random.Range(0, chats.Length)] + "~1");
+        }*/
+        ShowUserMsg();
+        verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
     }
 
 
-	private string lastUser;
-	IEnumerator ShowUserMsgCoroutine (string msg) {
+    public void ShowUserMsg()
+    {
+        for (int i = 0; i < chatData.Count; i++)
+        {
+            StartCoroutine(ShowUserMsgCoroutine(chatData[i]));
+        }
+    }
 
-		GameObject chatObj = Instantiate(chatBarPrefab,Vector3.zero, Quaternion.identity) as GameObject;
-		chatObj.transform.SetParent(content.transform,false);
+    public void SendMessageFromBot(string text)
+    {
+        if (text != null && !string.IsNullOrWhiteSpace(text))
+        {
+            chatData.Clear();
+            chatData.Add(text + "~0");
+            StartCoroutine(ShowUserMsgCoroutine(chatData[0]));
+        }
+    }
 
-		chatObj.SetActive(true);
-
-		ChatListObject clb = chatObj.GetComponent<ChatListObject>();
-
-		string[] split  = msg.Split('~');
-		msg = split[0];
-		/*
-		*0.03f = 16/480  (16 is the original font size in 320/480 resolution screen so to increase font size automatically with increase resolution screen we should multiply 0.03 with screen height)
-		*this not required when canvas scale mode is set to scale with screen size.
-		*/
-		fontSize = (int)(Screen.height*0.03f);
-
-		clb.parentText.fontSize = fontSize;
-		clb.childText.fontSize = fontSize;
-			
-		clb.parentText.text = msg;
-
-		clb.childText.color = Color.black;
-
-		yield return new WaitForEndOfFrame();
-
-		float height = chatObj.GetComponent<RectTransform>().rect.height;
-		float width = chatObj.GetComponent<RectTransform>().rect.width;
-
-		clb.chatbarImage.rectTransform.sizeDelta = new Vector2(width+5,height+6);
-		clb.childText.rectTransform.sizeDelta = new Vector2(width,height);
+    public void SendMsgFromInputfield()
+    {
+        if (inputField && !string.IsNullOrWhiteSpace(inputField.text))
+        {
+            chatData.Clear();
+            chatData.Add(inputField.text + "~1");
+            StartCoroutine(ShowUserMsgCoroutine(chatData[0]));
+            inputField.text = "";
+        }
+    }
 
 
-		clb.childText.text = msg;
+    private string lastUser;
 
-		if (split[1] == "0") {
+    IEnumerator ShowUserMsgCoroutine(string msg)
+    {
+        GameObject chatObj = Instantiate(chatBarPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+        chatObj.transform.SetParent(content.transform, false);
 
-			if(lastUser == "1") {
-				clb.userImage.enabled = true;
-			} else if(lastUser == "0"){
-				clb.userImage.enabled = false;
-			}
+        chatObj.SetActive(true);
 
-			clb.chatbarImage.color = new Color(user1ImageColor.r,user1ImageColor.g,user1ImageColor.b,1);
-			clb.userImage.sprite = user1Sprite;
+        ChatListObject clb = chatObj.GetComponent<ChatListObject>();
 
-			clb.chatbarImage.sprite = user1ChatBarSprite;
+        string[] split = msg.Split('~');
+        msg = split[0];
+        /*
+         *0.03f = 16/480  (16 is the original font size in 320/480 resolution screen so to increase font size automatically with increase resolution screen we should multiply 0.03 with screen height)
+         *this not required when canvas scale mode is set to scale with screen size.
+         */
+        fontSize = (int)(Screen.height * 0.03f);
 
-			clb.userImage.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-26f,clb.userImage.transform.parent.GetComponent<RectTransform>().anchoredPosition.y);
-			clb.chatbarImage.rectTransform.anchoredPosition = new Vector2(-3f,clb.chatbarImage.rectTransform.anchoredPosition.y);
+        clb.parentText.fontSize = fontSize;
+        clb.childText.fontSize = fontSize;
 
-			lastUser = "0";
+        clb.parentText.text = msg;
 
-		} else if (split[1] == "1") {
+        clb.childText.color = Color.black;
 
-			if(lastUser == "0") {
-				clb.userImage.enabled = true;
-			} else if(lastUser == "1"){
-				clb.userImage.enabled = false;
-			}
+        yield return new WaitForEndOfFrame();
 
-			clb.chatbarImage.color = new Color(user2ImageColor.r,user2ImageColor.g,user2ImageColor.b,1);
-			clb.userImage.sprite = user2Sprite;
+        float height = chatObj.GetComponent<RectTransform>().rect.height;
+        float width = chatObj.GetComponent<RectTransform>().rect.width;
 
-			clb.chatbarImage.sprite = user2ChatBarSprite;
+        clb.chatbarImage.rectTransform.sizeDelta = new Vector2(width + 5, height + 6);
+        clb.childText.rectTransform.sizeDelta = new Vector2(width, height);
 
-			clb.chatbarImage.rectTransform.anchoredPosition = new Vector2(((content.GetComponent<RectTransform>().rect.width-(verticalLayoutGroup.padding.left+verticalLayoutGroup.padding.right))-chatObj.GetComponent<RectTransform>().rect.width),clb.chatbarImage.rectTransform.anchoredPosition.y);
-			clb.userImage.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(clb.chatbarImage.rectTransform.anchoredPosition.x+clb.parentText.rectTransform.rect.width+27,clb.userImage.transform.parent.GetComponent<RectTransform>().anchoredPosition.y);
-			lastUser = "1";
 
-		}
+        clb.childText.text = msg;
 
-		content.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, content.GetComponent<RectTransform>().sizeDelta.y);
-	}
+        if (split[1] == "0")
+        {
+            if (lastUser == "1")
+            {
+                clb.userImage.enabled = true;
+            }
+            else if (lastUser == "0")
+            {
+                clb.userImage.enabled = false;
+            }
+
+            clb.chatbarImage.color = new Color(user1ImageColor.r, user1ImageColor.g, user1ImageColor.b, 1);
+            clb.userImage.sprite = user1Sprite;
+
+            clb.chatbarImage.sprite = user1ChatBarSprite;
+
+            clb.userImage.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(-26f,
+                clb.userImage.transform.parent.GetComponent<RectTransform>().anchoredPosition.y);
+            clb.chatbarImage.rectTransform.anchoredPosition =
+                new Vector2(-3f, clb.chatbarImage.rectTransform.anchoredPosition.y);
+
+            lastUser = "0";
+        }
+        else if (split[1] == "1")
+        {
+            if (lastUser == "0")
+            {
+                clb.userImage.enabled = true;
+            }
+            else if (lastUser == "1")
+            {
+                clb.userImage.enabled = false;
+            }
+
+            clb.chatbarImage.color = new Color(user2ImageColor.r, user2ImageColor.g, user2ImageColor.b, 1);
+            clb.userImage.sprite = user2Sprite;
+
+            clb.chatbarImage.sprite = user2ChatBarSprite;
+
+            clb.chatbarImage.rectTransform.anchoredPosition = new Vector2(
+                ((content.GetComponent<RectTransform>().rect.width -
+                  (verticalLayoutGroup.padding.left + verticalLayoutGroup.padding.right)) -
+                 chatObj.GetComponent<RectTransform>().rect.width), clb.chatbarImage.rectTransform.anchoredPosition.y);
+            clb.userImage.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector2(
+                clb.chatbarImage.rectTransform.anchoredPosition.x + clb.parentText.rectTransform.rect.width + 27,
+                clb.userImage.transform.parent.GetComponent<RectTransform>().anchoredPosition.y);
+            lastUser = "1";
+        }
+
+        content.GetComponent<RectTransform>().anchoredPosition =
+            new Vector2(0, content.GetComponent<RectTransform>().sizeDelta.y);
+    }
 }

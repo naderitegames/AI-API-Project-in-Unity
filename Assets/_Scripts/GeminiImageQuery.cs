@@ -25,21 +25,20 @@ public class GeminiImageQuery : MonoBehaviour
 
     [SerializeField] private string apiKey; // Your Google Gemini API key
     [SerializeField] private Texture2D imageToAnalyze; // The image to send
-    [SerializeField] private TMP_InputField responseText; // UI Text to display the response
     [SerializeField] private GeminiVisionModel selectedModel = GeminiVisionModel.Gemini20Flash;
     [SerializeField] private ImageSource imageSource = ImageSource.LocalImage;
     [SerializeField] private TextMeshProUGUI imageURL;
 
-    [TextArea] [SerializeField] private string defaultPrompt =
-        "فکر کن یک ربات هستی که فقط ورودی میگیره و خیلی سرد جواب میده. هر عکسی که میفرستم فقط دوتا پرامپت دقیق بده تا بتونم عکسای بیشتری با اون پرامپت بسازم.";
+    [TextArea] [SerializeField] private string defaultPrompt = "#Role : " +
+                                                               "فکر کن یک ربات هستی که فقط ورودی میگیره و خیلی سرد جواب میده. هر عکسی که میفرستم فقط دوتا پرامپت دقیق بده تا بتونم عکسای بیشتری با اون پرامپت بسازم.";
     //"imagen you are a robot that answers to requests without anyjust give me 2 seperate prompts that resaults images like this in google gemeni or even other image generation AIs. do not talk abot more details.";
 
     [SerializeField] private bool useCastomPrompt;
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         SendImageToGemini();
-    }
+    }*/
 
     public void SendImageToGemini()
     {
@@ -86,7 +85,7 @@ public class GeminiImageQuery : MonoBehaviour
             else
             {
                 Debug.LogError("Error downloading image: " + imageRequest.error);
-                responseText.text = "Error downloading image: " + imageRequest.error;
+                ChatManager.Instanse.SendMessageFromBot("Error downloading image: " + imageRequest.error);
             }
         }
     }
@@ -154,17 +153,17 @@ public class GeminiImageQuery : MonoBehaviour
 
                 if (!string.IsNullOrEmpty(responseTextContent))
                 {
-                    responseText.text = responseTextContent;
+                    ChatManager.Instanse.SendMessageFromBot(responseTextContent);
                 }
                 else
                 {
-                    responseText.text = "Failed to parse Gemini response.";
+                    ChatManager.Instanse.SendMessageFromBot("Failed to parse Gemini response.");
                 }
             }
             else
             {
                 Debug.LogError("Error: " + webRequest.error);
-                responseText.text = "Error: " + webRequest.error;
+                ChatManager.Instanse.SendMessageFromBot("Error: " + webRequest.error);
             }
         }
     }
