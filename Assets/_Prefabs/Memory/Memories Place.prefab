@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4436323775128490914}
   - component: {fileID: 498472291119735832}
   - component: {fileID: 6367073438621335908}
+  - component: {fileID: 1959138885521260888}
   m_Layer: 5
   m_Name: Memories Place
   m_TagString: Untagged
@@ -101,3 +102,16 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1959138885521260888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9131329348802011087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a159f613751b4f58b0ecf6405ea3dc80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memoryDisplayPrefab: {fileID: 8116095709704210273, guid: f780363980c54ab499686a34fec71399, type: 3}

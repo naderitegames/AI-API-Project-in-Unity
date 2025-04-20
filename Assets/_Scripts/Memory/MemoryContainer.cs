@@ -23,8 +23,9 @@ namespace _Scripts
             _lastUpdateTime = DateTime.Now;
         }
 
-        public MemoryContainer(string description)
+        public MemoryContainer(string description,string title)
         {
+            _title = title;
             _memoryTime = DateTime.Now;
             _description = description;
             _lastUpdateTime = DateTime.Now;
