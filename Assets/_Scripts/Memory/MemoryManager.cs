@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RTLTMPro;
 using UnityEngine;
 
 namespace _Scripts
@@ -7,7 +8,7 @@ namespace _Scripts
     {
         List<MemoryContainer> _memories = new List<MemoryContainer>();
 
-        public void AddToMemories(MemoryContainer memory)
+        void AddToMemories(MemoryContainer memory)
         {
             _memories.Add(memory);
         }
@@ -20,6 +21,11 @@ namespace _Scripts
         public List<MemoryContainer> GetAllMemories()
         {
             return _memories;
+        }
+
+        public void CreateMemoryFromInput(RTLTextMeshPro newText)
+        {
+            AddToMemories(new MemoryContainer(newText.text));
         }
     }
 }
