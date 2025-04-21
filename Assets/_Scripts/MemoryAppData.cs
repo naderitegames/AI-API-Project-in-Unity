@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _Scripts
 {
@@ -17,13 +18,24 @@ namespace _Scripts
         public void AddMemory(MemoryContainer memory)
         {
             if (!_memories.Contains(memory))
+            {
                 _memories.Add(memory);
+                SortAscendingByCreationDate();
+            }
         }
 
         public void Remove(MemoryContainer memory)
         {
             if (_memories.Contains(memory))
+            {
                 _memories.Remove(memory);
+                SortAscendingByCreationDate();
+            }
+        }
+
+        void SortAscendingByCreationDate()
+        {
+            _memories = _memories.OrderBy(x => x.TargetDate).ToList();
         }
     }
 }

@@ -49,17 +49,5 @@ namespace _Scripts
             _activePanel = _allPanels[(WindowType)typeIndex];
             _activePanel.SetActive(true);
         }
-
-        public void DisplaySearchResults(List<MemoryContainer> results)
-        {
-            if (results != null)
-            {
-                
-            }
-            else
-            {
-                
-            }
-        }
     }
 }

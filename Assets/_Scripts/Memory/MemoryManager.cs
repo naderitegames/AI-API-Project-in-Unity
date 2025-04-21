@@ -96,7 +96,10 @@ namespace _Scripts
         public void SearchInMemories(TMP_InputField inputField)
         {
             var results = MemorySearch.SearchMemoriesByKeyword(inputField.text, _data.Memories);
-            _memoriesKeeper.RefreshDisplayers(results);
+            if (inputField.text != "")
+                _memoriesKeeper.RefreshDisplayers(results);
+            if (inputField.text == "")
+                _memoriesKeeper.RefreshDisplayers();
         }
     }
 }

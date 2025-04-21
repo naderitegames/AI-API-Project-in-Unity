@@ -13,6 +13,8 @@ namespace _Scripts
         string _summary = "";
         public string Description => _description;
         string _description;
+        public DateTime TargetDate => _targetDate;
+        DateTime _targetDate;
         public DateTime LastUpdateTime => _lastUpdateTime;
         DateTime _lastUpdateTime;
 
@@ -20,15 +22,15 @@ namespace _Scripts
         {
             _memoryTime = DateTime.Now;
             _description = "";
-            _lastUpdateTime = DateTime.Now;
+            _lastUpdateTime = _targetDate = DateTime.Now;
         }
 
-        public MemoryContainer(string description,string title)
+        public MemoryContainer(string description, string title)
         {
             _title = title;
             _memoryTime = DateTime.Now;
             _description = description;
-            _lastUpdateTime = DateTime.Now;
+            _lastUpdateTime = _targetDate = DateTime.Now;
         }
 
         public void UpdateMemoryDescription(string description)

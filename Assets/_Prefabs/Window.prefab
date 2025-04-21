@@ -102,3 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d191218e05d34d1e9b05e95bbd89f234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnWindowActived:
+    m_PersistentCalls:
+      m_Calls: []

@@ -14,10 +14,11 @@ namespace _Scripts
         List<MemoryContainer> _memories;
         private ObjectPool<MemoryDisplay> _displayersPool;
         [SerializeField] GameObject _noMemoriesFoundText;
+        [SerializeField] RectTransform contentPlace;
 
         private void Awake()
         {
-            _displayersPool = new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 5, transform, false);
+            _displayersPool = new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 20, contentPlace, false);
         }
 
         private void OnEnable()
@@ -37,23 +38,33 @@ namespace _Scripts
             if (targetMemories?.Count >= 1)
             {
                 _noMemoriesFoundText.SetActive(false);
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    transform.GetChild(i).gameObject.SetActive(false);
-                }
+                DisableAllDisplayers();
 
-                for (int i = 0; i < targetMemories.Count; i++)
+                foreach (var t in targetMemories)
                 {
-                    var newDisplayer = _displayersPool.GetObject();
-                    newDisplayer.transform.localScale = Vector3.one;
-                    newDisplayer.UpdateMemory(targetMemories[i]);
+                    DisplayAnotherOneMemory(t);
                 }
             }
             else
             {
+                DisableAllDisplayers();
                 _noMemoriesFoundText.SetActive(true);
-                RefreshDisplayers();
             }
+        }
+
+        void DisableAllDisplayers()
+        {
+            for (int i = 0; i < contentPlace.childCount; i++)
+            {
+                contentPlace.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        void DisplayAnotherOneMemory(MemoryContainer container)
+        {
+            var newDisplay = _displayersPool.GetObject();
+            newDisplay.transform.localScale = Vector3.one;
+            newDisplay.UpdateMemory(container);
         }
     }
 }

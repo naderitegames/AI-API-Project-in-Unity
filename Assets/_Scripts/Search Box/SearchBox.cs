@@ -23,10 +23,8 @@ namespace _Scripts
 
         private void OnSearchBoxValueChanged(string arg0)
         {
-            if (!string.IsNullOrEmpty(arg0)) //todo: And it is not on AI Mode ...
-            {
-                memoryManager.SearchInMemories(searchInputField);
-            }
+            //todo: if it is not on AI Mode ...
+            memoryManager.SearchInMemories(searchInputField);
         }
     }
 }
