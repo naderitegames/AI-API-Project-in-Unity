@@ -8,7 +8,7 @@ namespace _Scripts
     [Serializable]
     public enum WindowType
     {
-        Add=0,
+        Add = 0,
         Home,
         Chat
     }
@@ -31,15 +31,35 @@ namespace _Scripts
 
         private void Start()
         {
+            DisAppearAllPanels();
             ActivatePanel((int)WindowType.Home);
         }
 
-        public void ActivatePanel(int typeIndex)
+        void DisAppearAllPanels()
+        {
+            foreach (var var in _allPanels)
+            {
+                ActivatePanel((int)var.Key);
+            }
+        }
+        void ActivatePanel(int typeIndex)
         {
             //todo: use dotween here
             _activePanel.SetActive(false);
             _activePanel = _allPanels[(WindowType)typeIndex];
             _activePanel.SetActive(true);
+        }
+
+        public void DisplaySearchResults(List<MemoryContainer> results)
+        {
+            if (results != null)
+            {
+                
+            }
+            else
+            {
+                
+            }
         }
     }
 }

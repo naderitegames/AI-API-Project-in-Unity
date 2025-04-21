@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using RTLTMPro;
+using TMPro;
 using UnityEngine;
 
 namespace _Scripts
 {
     public class MemoryManager : MonoBehaviour
     {
+        [SerializeField] UiManager _uiManager;
+        [SerializeField] MemoriesKeeper _memoriesKeeper;
         MemoryAppData _data = new MemoryAppData();
         private string _memoryDataPath;
 
@@ -88,6 +91,14 @@ namespace _Scripts
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        public void SearchInMemories(TMP_InputField inputField)
+        {
+            var results = MemorySearch.SearchMemoriesByKeyword(inputField.text, _data.Memories);
+
+
+            _memoriesKeeper.RefreshDisplayers(results);
         }
     }
 }

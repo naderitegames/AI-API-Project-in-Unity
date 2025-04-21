@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 498472291119735832}
   - component: {fileID: 6367073438621335908}
   - component: {fileID: 1959138885521260888}
+  - component: {fileID: 5390807738065704872}
   m_Layer: 5
   m_Name: Memories Place
   m_TagString: Untagged
@@ -114,4 +115,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a159f613751b4f58b0ecf6405ea3dc80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _memoryManager: {fileID: 0}
   memoryDisplayPrefab: {fileID: 8116095709704210273, guid: f780363980c54ab499686a34fec71399, type: 3}
+--- !u!225 &5390807738065704872
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9131329348802011087}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
