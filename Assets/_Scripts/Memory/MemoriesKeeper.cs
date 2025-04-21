@@ -14,17 +14,6 @@ namespace _Scripts
         List<MemoryContainer> _memories;
         private ObjectPool<MemoryDisplay> _displayersPool;
         [SerializeField] GameObject _noMemoriesFoundText;
-        bool isResultFound = false;
-
-        public bool IsResultFound
-        {
-            private set { isResultFound = value; }
-            get
-            {
-                _noMemoriesFoundText.SetActive(!IsResultFound);
-                return isResultFound;
-            }
-        }
 
         private void Awake()
         {
@@ -39,14 +28,15 @@ namespace _Scripts
         public void RefreshDisplayers()
         {
             _memories = _memoryManager.GetAllMemories();
-            RefreshDisplayers(_memories);
+            if (_memories.Count >= 1)
+                RefreshDisplayers(_memories);
         }
 
         public void RefreshDisplayers(List<MemoryContainer> targetMemories)
         {
-            if (targetMemories?.Count >= 0)
+            if (targetMemories?.Count >= 1)
             {
-                IsResultFound = true;
+                _noMemoriesFoundText.SetActive(false);
                 for (int i = 0; i < transform.childCount; i++)
                 {
                     transform.GetChild(i).gameObject.SetActive(false);
@@ -61,7 +51,8 @@ namespace _Scripts
             }
             else
             {
-                IsResultFound = false;
+                _noMemoriesFoundText.SetActive(true);
+                RefreshDisplayers();
             }
         }
     }
