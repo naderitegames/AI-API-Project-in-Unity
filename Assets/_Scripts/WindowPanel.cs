@@ -1,0 +1,32 @@
+using System;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
+namespace _Scripts
+{
+    [RequireComponent(typeof(CanvasGroup))]
+    public class WindowPanel : MonoBehaviour
+    {
+        CanvasGroup _canvasGroup;
+        [SerializeField] UnityEvent OnWindowActived;
+        public CanvasGroup CanvasGroup => _canvasGroup;
+
+        private void Awake()
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+        }
+
+        public void SetActive(bool t)
+        {
+            if (t)
+            {
+                OnWindowActived?.Invoke();
+            }
+
+            _canvasGroup.alpha = t ? 1 : 0;
+            _canvasGroup.interactable = t;
+            _canvasGroup.blocksRaycasts = t;
+        }
+    }
+}
