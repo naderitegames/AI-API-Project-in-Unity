@@ -22,7 +22,7 @@ namespace _Scripts
             RefreshDisplayers();
         }
 
-        void RefreshDisplayers()
+        public void RefreshDisplayers()
         {
             for (int i = 0; i < transform.childCount; i++)
             {

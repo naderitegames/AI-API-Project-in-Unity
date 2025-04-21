@@ -38,6 +38,7 @@ namespace _Scripts
                     throw new NoNullAllowedException(" Memory description can not be empty");
                 }
 
+                memoryInput.RefreshInputs();
                 AddToMemoriesAndSave(new MemoryContainer(description, title));
             }
             catch (Exception e)

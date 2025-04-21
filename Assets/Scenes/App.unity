@@ -277,6 +277,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4411821945842904037, guid: 87505972c95aa6b4d8025dbdc3c04665, type: 3}
+      propertyPath: OnWindowActived.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411821945842904037, guid: 87505972c95aa6b4d8025dbdc3c04665, type: 3}
+      propertyPath: OnWindowActived.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411821945842904037, guid: 87505972c95aa6b4d8025dbdc3c04665, type: 3}
+      propertyPath: OnWindowActived.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4422126643921240371}
+    - target: {fileID: 4411821945842904037, guid: 87505972c95aa6b4d8025dbdc3c04665, type: 3}
+      propertyPath: OnWindowActived.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411821945842904037, guid: 87505972c95aa6b4d8025dbdc3c04665, type: 3}
+      propertyPath: OnWindowActived.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RefreshDisplayers
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411821945842904037, guid: 87505972c95aa6b4d8025dbdc3c04665, type: 3}
+      propertyPath: OnWindowActived.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Scripts.MemoriesKeeper, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411821945842904037, guid: 87505972c95aa6b4d8025dbdc3c04665, type: 3}
+      propertyPath: OnWindowActived.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 9019089845463714205, guid: 87505972c95aa6b4d8025dbdc3c04665, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3528,6 +3556,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7aed10f5be63a18429fa3587875e2a03, type: 3}
+--- !u!114 &4422126643921240371 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1959138885521260888, guid: 7aed10f5be63a18429fa3587875e2a03, type: 3}
+  m_PrefabInstance: {fileID: 4422126643921240366}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a159f613751b4f58b0ecf6405ea3dc80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4646801467177147855
 PrefabInstance:
   m_ObjectHideFlags: 0
