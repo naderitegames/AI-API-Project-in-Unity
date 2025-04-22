@@ -93,6 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0e0471cf8446f7aa7779ddb8b0088c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charLimitationForDescription: 100
+  charLimitationForTitle: 20
   descriptionPlace: {fileID: 666554398588293626}
   titlePlace: {fileID: 1867249798589469133}
   creationTimePlace: {fileID: 1863257831767408275}
