@@ -17,7 +17,7 @@ namespace _Scripts
             _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        public void SetActive(bool t)
+        public virtual void SetActive(bool t)
         {
             if (t)
             {

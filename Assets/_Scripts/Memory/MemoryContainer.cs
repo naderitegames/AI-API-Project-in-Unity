@@ -5,6 +5,8 @@ namespace _Scripts
     [Serializable]
     public class MemoryContainer
     {
+        public string ID => _id;
+        private string _id;
         public DateTime MemoryTime => _memoryTime;
         private DateTime _memoryTime;
         public string Title => _title;
@@ -17,20 +19,17 @@ namespace _Scripts
         DateTime _targetDate;
         public DateTime LastUpdateTime => _lastUpdateTime;
         DateTime _lastUpdateTime;
+        public int TotalCharactersInMemory => _totalCharactersInMemory;
+        int _totalCharactersInMemory;
 
         public MemoryContainer()
         {
-            _memoryTime = DateTime.Now;
-            _description = "";
-            _lastUpdateTime = _targetDate = DateTime.Now;
+            InitializeNewMemory("", "");
         }
 
         public MemoryContainer(string description, string title)
         {
-            _title = title;
-            _memoryTime = DateTime.Now;
-            _description = description;
-            _lastUpdateTime = _targetDate = DateTime.Now;
+            InitializeNewMemory(title, description);
         }
 
         public void UpdateMemoryDescription(string description)
@@ -42,6 +41,21 @@ namespace _Scripts
         public void UpdateSummary(string summary)
         {
             _summary = summary;
+        }
+
+        void InitializeNewMemory(string title, string description)
+        {
+            _id = Guid.NewGuid().ToString();
+            _title = title;
+            _memoryTime = DateTime.Now;
+            _description = description;
+            _lastUpdateTime = _targetDate = DateTime.Now;
+            UpdateMemoryProperties();
+        }
+
+        void UpdateMemoryProperties()
+        {
+            _totalCharactersInMemory = _description.Length + _title.Length;
         }
     }
 }

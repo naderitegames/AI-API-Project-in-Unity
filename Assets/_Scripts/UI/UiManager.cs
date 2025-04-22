@@ -18,11 +18,14 @@ namespace _Scripts
         [SerializeField] WindowPanel addWindowPanel;
         [SerializeField] WindowPanel homeWindowPanel;
         [SerializeField] WindowPanel chatWindowPanel;
+        [SerializeField] private WarningWindow _warningWindow;
         Dictionary<WindowType, WindowPanel> _allPanels = new Dictionary<WindowType, WindowPanel>();
         WindowPanel _activePanel;
 
+        public static UiManager Instance { get; private set; }
         private void Awake()
         {
+            Instance = this;
             _allPanels.Add(WindowType.Add, addWindowPanel);
             _allPanels.Add(WindowType.Home, homeWindowPanel);
             _allPanels.Add(WindowType.Chat, chatWindowPanel);
@@ -42,12 +45,18 @@ namespace _Scripts
                 ActivatePanel((int)var.Key);
             }
         }
+
         void ActivatePanel(int typeIndex)
         {
             //todo: use dotween here
             _activePanel.SetActive(false);
             _activePanel = _allPanels[(WindowType)typeIndex];
             _activePanel.SetActive(true);
+        }
+        public void DisplayThisWarning(string warningText, Action job, string cancelText = "Cancel",
+            string okText = "Continue")
+        {
+            _warningWindow.UpdateTextAndDisplay(warningText, job, cancelText, okText);
         }
     }
 }

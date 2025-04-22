@@ -71,6 +71,7 @@ namespace _Scripts
             {
                 _data.Remove(memory);
                 SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
+                _memoriesKeeper.RefreshDisplayers();
             }
             catch (Exception e)
             {

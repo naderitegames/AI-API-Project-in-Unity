@@ -7,17 +7,38 @@ namespace _Scripts
 {
     public class MemoryDisplay : MonoBehaviour
     {
+        private MemoryManager _manager;
         [SerializeField] private int charLimitationForDescription;
         [SerializeField] private int charLimitationForTitle;
         [SerializeField] RTLTextMeshPro descriptionPlace;
         [SerializeField] RTLTextMeshPro titlePlace;
         [SerializeField] RTLTextMeshPro creationTimePlace;
         [SerializeField] RTLTextMeshPro lastModifiedTimePlace;
+        [SerializeField] MemoryContextMenu memoryContextMenu;
         private MemoryContainer _memory;
+        static Action OnOtherContextMenuWillBeOpen;
 
         private void OnEnable()
         {
+            memoryContextMenu.CloseContextMenu();
+            OnOtherContextMenuWillBeOpen += OnOnOtherContextMenuWillBeOpen;
             RefreshMemory();
+        }
+
+        private void OnDisable()
+        {
+            OnOtherContextMenuWillBeOpen -= OnOnOtherContextMenuWillBeOpen;
+        }
+
+        private void OnOnOtherContextMenuWillBeOpen()
+        {
+            memoryContextMenu.CloseContextMenu();
+        }
+
+        public void SetUp(MemoryContainer memory, MemoryManager manager)
+        {
+            this._manager = manager;
+            UpdateMemory(memory);
         }
 
         public void UpdateMemory(MemoryContainer memory)
@@ -38,7 +59,7 @@ namespace _Scripts
             }
         }
 
-        public static string GetShortPreview(string text, int maxCharacters = 150)
+        static string GetShortPreview(string text, int maxCharacters = 150)
         {
             if (string.IsNullOrWhiteSpace(text)) return "";
 
@@ -53,6 +74,23 @@ namespace _Scripts
                 shortened = shortened.Substring(0, lastSpace);
 
             return shortened + " ...";
+        }
+
+        public void OpenContextMenu()
+        {
+            OnOtherContextMenuWillBeOpen?.Invoke();
+            memoryContextMenu.ToggleContextMenu();
+        }
+
+        public void DeleteThisMemory()
+        {
+            UiManager.Instance.DisplayThisWarning("از حذف اطمینان دارید؟!",
+                () => { _manager.RemoveFromMemories(_memory); }, "خیر", "بله");
+        }
+
+        public void SummarizeThisMemory()
+        {
+            //todo: summarize and save
         }
     }
 }

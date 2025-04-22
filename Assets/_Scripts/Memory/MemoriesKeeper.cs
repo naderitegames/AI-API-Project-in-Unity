@@ -64,7 +64,7 @@ namespace _Scripts
         {
             var newDisplay = _displayersPool.GetObject();
             newDisplay.transform.localScale = Vector3.one;
-            newDisplay.UpdateMemory(container);
+            newDisplay.SetUp(container, _memoryManager);
         }
     }
 }
