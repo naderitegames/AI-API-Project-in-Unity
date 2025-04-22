@@ -90,7 +90,7 @@ namespace _Scripts
 
         public void SummarizeThisMemory()
         {
-            //todo: summarize and save
+            _manager.SummarizeThisMemoryThenSave(_memory);
         }
     }
 }

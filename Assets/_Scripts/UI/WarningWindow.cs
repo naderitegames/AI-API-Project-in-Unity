@@ -32,17 +32,32 @@ namespace _Scripts
             SetActive(false);
             _onOkClicked?.Invoke();
         }
+
         private void OnCancelButtonClicked()
         {
             SetActive(false);
         }
+
         public void UpdateTextAndDisplay(string message, Action ifPressOk, string cancelButtonText = "Cancel",
             string okButtonText = "Continue")
         {
+            targetCancelBtton.gameObject.SetActive(true);
+            targetOkButton.gameObject.SetActive(true);
             warningText.text = message;
             okText.text = okButtonText;
             cancelText.text = cancelButtonText;
             _onOkClicked = ifPressOk;
+            SetActive(true);
+        }
+
+        public void UpdateTextAndDisplay(string message, string text = "بسیار خب",
+            string okButtonText = "Continue")
+        {
+            targetCancelBtton.gameObject.SetActive(false);
+            targetOkButton.gameObject.SetActive(true);
+            warningText.text = message;
+            okText.text = text;
+            _onOkClicked = null;
             SetActive(true);
         }
     }

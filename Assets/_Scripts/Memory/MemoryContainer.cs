@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.Networking.Types;
 
 namespace _Scripts
 {
@@ -25,6 +26,11 @@ namespace _Scripts
         public MemoryContainer()
         {
             InitializeNewMemory("", "");
+        }
+
+        public void UpdateId(string newId)
+        {
+            _id = newId;
         }
 
         public MemoryContainer(string description, string title)
@@ -56,6 +62,17 @@ namespace _Scripts
         void UpdateMemoryProperties()
         {
             _totalCharactersInMemory = _description.Length + _title.Length;
+        }
+
+        public void UpdateTitle(string newTitle)
+        {
+            _title = newTitle;
+            _lastUpdateTime = DateTime.Now;
+        }
+
+        public void SetLastUpdateTime(DateTime time)
+        {
+            _lastUpdateTime = time;
         }
     }
 }

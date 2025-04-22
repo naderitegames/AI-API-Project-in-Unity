@@ -58,5 +58,11 @@ namespace _Scripts
         {
             _warningWindow.UpdateTextAndDisplay(warningText, job, cancelText, okText);
         }
+
+        public void DisplayThisWarning(string message,string okText = " بسیار خب!")
+        {
+            _warningWindow.UpdateTextAndDisplay(message,okText);
+
+        }
     }
 }

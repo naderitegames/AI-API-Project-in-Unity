@@ -37,5 +37,21 @@ namespace _Scripts
         {
             _memories = _memories.OrderBy(x => x.TargetDate).ToList();
         }
+        public void UpdateMemoryById(MemoryContainer updatedMemory)
+        {
+            for (int i = 0; i < _memories.Count; i++)
+            {
+                if (_memories[i].ID == updatedMemory.ID)
+                {
+                    _memories[i].UpdateMemoryDescription(updatedMemory.Description);
+                    _memories[i].UpdateSummary(updatedMemory.Summary);
+                    _memories[i].UpdateTitle(updatedMemory.Title);
+                    _memories[i].SetLastUpdateTime(DateTime.Now);
+                    return;
+                }
+            }
+
+            UnityEngine.Debug.LogWarning($"❗ خاطره‌ای با ID {updatedMemory.ID} پیدا نشد.");
+        }
     }
 }
