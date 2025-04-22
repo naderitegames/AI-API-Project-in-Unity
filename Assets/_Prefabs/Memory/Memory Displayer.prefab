@@ -114,9 +114,9 @@ PrefabInstance:
       value: Context Menu
       objectReference: {fileID: 0}
     - target: {fileID: 2206687141705784467, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
-      propertyPath: _canvasGroup
+      propertyPath: _memoryDisplay
       value: 
-      objectReference: {fileID: 2497100691392085873}
+      objectReference: {fileID: 8116095709704210273}
     - target: {fileID: 2527344976965209211, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -144,6 +144,22 @@ PrefabInstance:
     - target: {fileID: 2527344976965209211, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3244495737659002390, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3244495737659002390, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3244495737659002390, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6347699863268419604}
+    - target: {fileID: 3244495737659002390, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3399090208705372541, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -350,11 +366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13cdf89c73b94e4dbaa7538c5d82837c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!225 &2497100691392085873 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 4049243946033298962, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}
-  m_PrefabInstance: {fileID: 1915919023715484003}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7779751160676762328 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8169965428348273595, guid: 0edf1c7d5393e474a8c44492d71ca985, type: 3}

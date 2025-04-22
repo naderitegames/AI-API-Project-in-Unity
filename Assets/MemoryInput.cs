@@ -14,4 +14,14 @@ public class MemoryInput : MonoBehaviour
     {
         title.text = description.text = "";
     }
+
+    public void ClearDescription()
+    {
+        description.text = "";
+    }
+
+    public void ForceInputValuesTo()
+    {
+        
+    }
 }

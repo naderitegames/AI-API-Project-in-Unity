@@ -15,14 +15,15 @@ namespace _Scripts
 
     public class UiManager : MonoBehaviour
     {
-        [SerializeField] WindowPanel addWindowPanel;
-        [SerializeField] WindowPanel homeWindowPanel;
-        [SerializeField] WindowPanel chatWindowPanel;
+        [SerializeField] AddMemoryWindow addWindowPanel;
+        [SerializeField] HomeWindow homeWindowPanel;
+        [SerializeField] ChatWindow chatWindowPanel;
         [SerializeField] private WarningWindow _warningWindow;
         Dictionary<WindowType, WindowPanel> _allPanels = new Dictionary<WindowType, WindowPanel>();
         WindowPanel _activePanel;
 
         public static UiManager Instance { get; private set; }
+
         private void Awake()
         {
             Instance = this;
@@ -35,7 +36,7 @@ namespace _Scripts
         private void Start()
         {
             DisAppearAllPanels();
-            ActivatePanel((int)WindowType.Home);
+            ActivatePanel(WindowType.Home);
         }
 
         void DisAppearAllPanels()
@@ -46,23 +47,28 @@ namespace _Scripts
             }
         }
 
-        void ActivatePanel(int typeIndex)
+        public void ActivatePanel(int typeIndex)
+        {
+            ActivatePanel((WindowType)typeIndex);
+        }
+
+        public void ActivatePanel(WindowType type)
         {
             //todo: use dotween here
             _activePanel.SetActive(false);
-            _activePanel = _allPanels[(WindowType)typeIndex];
+            _activePanel = _allPanels[type];
             _activePanel.SetActive(true);
         }
+
         public void DisplayThisWarning(string warningText, Action job, string cancelText = "Cancel",
             string okText = "Continue")
         {
             _warningWindow.UpdateTextAndDisplay(warningText, job, cancelText, okText);
         }
 
-        public void DisplayThisWarning(string message,string okText = " بسیار خب!")
+        public void DisplayThisWarning(string message, string okText = " بسیار خب!")
         {
-            _warningWindow.UpdateTextAndDisplay(message,okText);
-
+            _warningWindow.UpdateTextAndDisplay(message, okText);
         }
     }
 }

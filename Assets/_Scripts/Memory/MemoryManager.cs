@@ -15,6 +15,7 @@ namespace _Scripts
         [SerializeField] private GeminiAiManager _aiManager;
         [SerializeField] private int summaryLineCount;
         MemoryAppData _data = new MemoryAppData();
+        [SerializeField] MemoryEditWindow editWindow;
         private string _memoryDataPath;
 
         private void Awake()
@@ -52,6 +53,11 @@ namespace _Scripts
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        public void OpenEditWindowForThisMemory(MemoryContainer memory)
+        {
+            editWindow.EnableEditingForThisMemory(memory);
         }
 
         void AddToMemoriesAndSave(MemoryContainer memory)
@@ -135,6 +141,12 @@ namespace _Scripts
         MemoryContainer GetMemoryById(MemoryContainer target)
         {
             return _data.Memories.FirstOrDefault(m => m.ID == target.ID);
+        }
+
+        public void UpdateThisEditedMemory(MemoryContainer targetMemory)
+        {
+            _data.UpdateMemoryById(targetMemory);
+            SaveMemoriesAndRefresh();
         }
     }
 }

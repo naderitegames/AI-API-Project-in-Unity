@@ -92,5 +92,11 @@ namespace _Scripts
         {
             _manager.SummarizeThisMemoryThenSave(_memory);
         }
+
+        public void TryEditingThisMemory()
+        {
+            UiManager.Instance.DisplayThisWarning("از ویرایش خاطره اطمینان دارید؟!",
+                () => { _manager.OpenEditWindowForThisMemory(_memory); }, "خیر", "بله");
+        }
     }
 }

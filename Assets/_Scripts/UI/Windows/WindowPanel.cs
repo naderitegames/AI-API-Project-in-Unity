@@ -6,13 +6,13 @@ using UnityEngine.UI;
 namespace _Scripts
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class WindowPanel : MonoBehaviour
+    public abstract class WindowPanel : MonoBehaviour
     {
         CanvasGroup _canvasGroup;
         [SerializeField] UnityEvent OnWindowActived;
         public CanvasGroup CanvasGroup => _canvasGroup;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
         }
