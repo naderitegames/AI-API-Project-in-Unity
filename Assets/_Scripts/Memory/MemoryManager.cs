@@ -89,6 +89,13 @@ namespace _Scripts
             }
         }
 
+        public void ToggleThisMemoryPinState(MemoryContainer memory)
+        {
+            GetMemoryById(memory).SetPinStateTo(!memory.IsPinned);
+            SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
+            _memoriesKeeper.RefreshDisplayers();
+        }
+
         public void LoadMemories()
         {
             try

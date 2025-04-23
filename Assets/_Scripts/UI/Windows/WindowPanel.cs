@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace _Scripts
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class WindowPanel : MonoBehaviour
+    public class WindowPanel : MonoBehaviour
     {
         CanvasGroup _canvasGroup;
         [SerializeField] UnityEvent OnWindowActived;
@@ -17,16 +17,16 @@ namespace _Scripts
             _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        public virtual void SetActive(bool t)
+        public virtual void SetActive(bool isActive)
         {
-            if (t)
+            if (isActive)
             {
                 OnWindowActived?.Invoke();
             }
 
-            _canvasGroup.alpha = t ? 1 : 0;
-            _canvasGroup.interactable = t;
-            _canvasGroup.blocksRaycasts = t;
+            _canvasGroup.alpha = isActive ? 1 : 0;
+            _canvasGroup.interactable = isActive;
+            _canvasGroup.blocksRaycasts = isActive;
         }
     }
 }

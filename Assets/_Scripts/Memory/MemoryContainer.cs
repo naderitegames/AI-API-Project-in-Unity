@@ -22,6 +22,8 @@ namespace _Scripts
         DateTime _lastUpdateTime;
         public int TotalCharactersInMemory => _totalCharactersInMemory;
         int _totalCharactersInMemory;
+        public bool IsPinned => _isPinned;
+        bool _isPinned = false;
 
         public MemoryContainer()
         {
@@ -73,6 +75,11 @@ namespace _Scripts
         public void SetLastUpdateTime(DateTime time)
         {
             _lastUpdateTime = time;
+        }
+
+        public void SetPinStateTo(bool b)
+        {
+            _isPinned = b;
         }
     }
 }

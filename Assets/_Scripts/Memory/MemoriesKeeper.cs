@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Nader.ObjectPooling;
 using RTLTMPro;
@@ -12,13 +13,19 @@ namespace _Scripts
         [SerializeField] MemoryManager _memoryManager;
         [SerializeField] MemoryDisplay memoryDisplayPrefab;
         List<MemoryContainer> _memories;
+        private ObjectPool<MemoryDisplay> _pinnedDisplayersPool;
         private ObjectPool<MemoryDisplay> _displayersPool;
         [SerializeField] GameObject _noMemoriesFoundText;
         [SerializeField] RectTransform contentPlace;
+        [SerializeField] RectTransform otherMemoriesPlace;
+        [SerializeField] RectTransform pinnedMemoriesPlace;
 
         private void Awake()
         {
-            _displayersPool = new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 20, contentPlace, false);
+            _displayersPool =
+                new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 5, otherMemoriesPlace.transform, false);
+            _pinnedDisplayersPool =
+                new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 5, pinnedMemoriesPlace.transform, false);
         }
 
         private void OnEnable()
@@ -62,7 +69,7 @@ namespace _Scripts
 
         void DisplayAnotherOneMemory(MemoryContainer container)
         {
-            var newDisplay = _displayersPool.GetObject();
+            var newDisplay = container.IsPinned ? _pinnedDisplayersPool.GetObject() : _displayersPool.GetObject();
             newDisplay.transform.localScale = Vector3.one;
             newDisplay.SetUp(container, _memoryManager);
         }

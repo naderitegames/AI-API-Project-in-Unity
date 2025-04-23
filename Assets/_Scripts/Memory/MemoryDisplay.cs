@@ -1,26 +1,36 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using RTLTMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace _Scripts
 {
     public class MemoryDisplay : MonoBehaviour
     {
         private MemoryManager _manager;
-        [SerializeField] private int charLimitationForDescription;
-        [SerializeField] private int charLimitationForTitle;
+        [SerializeField] Button targetOpeningButton;
+        
+        //[SerializeField] private int charLimitationForDescription;
+        //[SerializeField] private int charLimitationForTitle;
         [SerializeField] RTLTextMeshPro descriptionPlace;
         [SerializeField] RTLTextMeshPro titlePlace;
-        [SerializeField] RTLTextMeshPro creationTimePlace;
         [SerializeField] RTLTextMeshPro lastModifiedTimePlace;
-        [SerializeField] MemoryContextMenu memoryContextMenu;
+        public static List<MemoryDisplay> SelectedDisplayers = new List<MemoryDisplay>();
+
+        [FormerlySerializedAs("memoryContextMenu")] [SerializeField]
+        ContextMenu contextMenu;
+
         private MemoryContainer _memory;
         static Action OnOtherContextMenuWillBeOpen;
+        public bool IsSelected => isSelected;
+        private bool isSelected;
 
         private void OnEnable()
         {
-            memoryContextMenu.CloseContextMenu();
+            contextMenu.SetActive(false);
             OnOtherContextMenuWillBeOpen += OnOnOtherContextMenuWillBeOpen;
             RefreshMemory();
         }
@@ -32,7 +42,7 @@ namespace _Scripts
 
         private void OnOnOtherContextMenuWillBeOpen()
         {
-            memoryContextMenu.CloseContextMenu();
+            contextMenu.SetActive(false);
         }
 
         public void SetUp(MemoryContainer memory, MemoryManager manager)
@@ -51,15 +61,20 @@ namespace _Scripts
         {
             if (_memory != null)
             {
-                titlePlace.text = GetShortPreview(_memory.Title, charLimitationForTitle);
+                titlePlace.text = _memory.Title;
+                var targetDescription = _memory.Summary == "" ? _memory.Description : _memory.Summary;
+                descriptionPlace.text = targetDescription;
+                lastModifiedTimePlace.text = _memory.LastUpdateTime.ToString(CultureInfo.InvariantCulture);
+                
+                /*titlePlace.text = GetShortPreview(_memory.Title, charLimitationForTitle);
                 var targetDescription = _memory.Summary == "" ? _memory.Description : _memory.Summary;
                 descriptionPlace.text = GetShortPreview(targetDescription, charLimitationForDescription);
                 creationTimePlace.text = _memory.LastUpdateTime.ToString(CultureInfo.InvariantCulture);
-                lastModifiedTimePlace.text = _memory.LastUpdateTime.ToString(CultureInfo.InvariantCulture);
+                lastModifiedTimePlace.text = _memory.LastUpdateTime.ToString(CultureInfo.InvariantCulture);*/
             }
         }
 
-        static string GetShortPreview(string text, int maxCharacters = 150)
+        /*static string GetShortPreview(string text, int maxCharacters = 150)
         {
             if (string.IsNullOrWhiteSpace(text)) return "";
 
@@ -74,18 +89,23 @@ namespace _Scripts
                 shortened = shortened.Substring(0, lastSpace);
 
             return shortened + " ...";
-        }
+        }*/
 
         public void OpenContextMenu()
         {
             OnOtherContextMenuWillBeOpen?.Invoke();
-            memoryContextMenu.ToggleContextMenu();
+            contextMenu.SetActive(true);
         }
 
         public void DeleteThisMemory()
         {
             UiManager.Instance.DisplayThisWarning("از حذف اطمینان دارید؟!",
                 () => { _manager.RemoveFromMemories(_memory); }, "خیر", "بله");
+        }
+
+        public void TogglePinState()
+        {
+            _manager.ToggleThisMemoryPinState(_memory);
         }
 
         public void SummarizeThisMemory()
@@ -97,6 +117,26 @@ namespace _Scripts
         {
             UiManager.Instance.DisplayThisWarning("از ویرایش خاطره اطمینان دارید؟!",
                 () => { _manager.OpenEditWindowForThisMemory(_memory); }, "خیر", "بله");
+        }
+
+        public void ChangeSelectionStateTo(bool b)
+        {
+            isSelected = b;
+            if (isSelected)
+            {
+                // Just a double check for make sure not dealing with null ...
+                if (!SelectedDisplayers.Contains(this))
+                {
+                    SelectedDisplayers.Add(this);
+                }
+            }
+            else
+            {
+                if (SelectedDisplayers.Contains(this))
+                {
+                    SelectedDisplayers.Remove(this);
+                }
+            }
         }
     }
 }
