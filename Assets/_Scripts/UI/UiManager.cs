@@ -8,14 +8,16 @@ namespace _Scripts
     [Serializable]
     public enum WindowType
     {
-        Add = 0,
-        Home,
-        Chat
+        //Add = 0,
+        Home = 0,
+        Chat,
+        Edit
     }
 
     public class UiManager : MonoBehaviour
     {
-        [SerializeField] AddMemoryWindow addWindowPanel;
+        //[SerializeField] AddMemoryWindow addWindowPanel;
+        [SerializeField] MemoryEditWindow memoryEditWindow;
         [SerializeField] HomeWindow homeWindowPanel;
         [SerializeField] ChatWindow chatWindowPanel;
         [SerializeField] private WarningWindow _warningWindow;
@@ -27,7 +29,8 @@ namespace _Scripts
         private void Awake()
         {
             Instance = this;
-            _allPanels.Add(WindowType.Add, addWindowPanel);
+            //_allPanels.Add(WindowType.Add, addWindowPanel);
+            _allPanels.Add(WindowType.Edit, memoryEditWindow);
             _allPanels.Add(WindowType.Home, homeWindowPanel);
             _allPanels.Add(WindowType.Chat, chatWindowPanel);
             _activePanel = _allPanels[WindowType.Home];
@@ -43,7 +46,7 @@ namespace _Scripts
         {
             foreach (var var in _allPanels)
             {
-                ActivatePanel((int)var.Key);
+                _allPanels[var.Key].SetActive(false);
             }
         }
 
@@ -69,6 +72,23 @@ namespace _Scripts
         public void DisplayThisWarning(string message, string okText = " بسیار خب!")
         {
             _warningWindow.UpdateTextAndDisplay(message, okText);
+        }
+
+        public void OpenNewDiaryEditWindow()
+        {
+            ActivatePanel(WindowType.Edit);
+            memoryEditWindow.SetUpForWritingDiary();
+        }
+
+        public void OpenNewDiaryEditWindow(MemoryContainer c)
+        {
+            ActivatePanel(WindowType.Edit);
+            memoryEditWindow.SetUpForWritingDiary(c);
+        }
+
+        public void DisplayHome()
+        {
+            ActivatePanel(WindowType.Home);
         }
     }
 }

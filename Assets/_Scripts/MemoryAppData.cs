@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace _Scripts
 {
@@ -13,6 +14,7 @@ namespace _Scripts
         public MemoryAppData()
         {
             _memories = new List<MemoryContainer>();
+            AddMemory(new MemoryContainer("امروز اولین روزی هست که از این برنامه استفاده میکنم.","اولین استفاده"));
         }
 
         public void AddMemory(MemoryContainer memory)
@@ -37,21 +39,24 @@ namespace _Scripts
         {
             _memories = _memories.OrderBy(x => x.TargetDate).ToList();
         }
-        public void UpdateMemoryById(MemoryContainer updatedMemory)
+
+        public void UpdateMemoryByIdOrMakeNewOne(MemoryContainer targetMemory)
         {
             for (int i = 0; i < _memories.Count; i++)
             {
-                if (_memories[i].ID == updatedMemory.ID)
+                if (_memories[i].ID == targetMemory.ID)
                 {
-                    _memories[i].UpdateMemoryDescription(updatedMemory.Description);
-                    _memories[i].UpdateSummary(updatedMemory.Summary);
-                    _memories[i].UpdateTitle(updatedMemory.Title);
+                    _memories[i].UpdateMemoryDescription(targetMemory.Description);
+                    _memories[i].UpdateSummary(targetMemory.Summary);
+                    _memories[i].UpdateTitle(targetMemory.Title);
                     _memories[i].SetLastUpdateTime(DateTime.Now);
                     return;
                 }
             }
 
-            UnityEngine.Debug.LogWarning($"❗ خاطره‌ای با ID {updatedMemory.ID} پیدا نشد.");
+            AddMemory(targetMemory);
+            Debug.LogError("diary did not find but added");
+            //UnityEngine.Debug.LogWarning($"❗ خاطره‌ای با ID {targetMemory.ID} پیدا نشد.");
         }
     }
 }

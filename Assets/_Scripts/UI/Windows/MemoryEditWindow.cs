@@ -7,7 +7,6 @@ namespace _Scripts
 {
     public class MemoryEditWindow : WindowPanel
     {
-        [SerializeField] private MemoryManager _manager;
         MemoryContainer _targetMemory;
         [SerializeField] TMP_InputField descriptopnInputField;
         [SerializeField] TMP_InputField titleInputField;
@@ -19,7 +18,7 @@ namespace _Scripts
         {
             targetCancelButton.onClick.AddListener(CancelButtonClick);
             targetSaveButton.onClick.AddListener(SaveEditedMemory);
-            targetClearButon.onClick.AddListener(ClearDescriptionTotaly);
+            targetClearButon.onClick.AddListener(ClearDescriptionTotally);
             descriptopnInputField.onValueChanged.AddListener(OnOnInputFieldsChange);
             titleInputField.onValueChanged.AddListener(OnOnInputFieldsChange);
         }
@@ -28,7 +27,7 @@ namespace _Scripts
         {
             targetCancelButton.onClick.RemoveListener(CancelButtonClick);
             targetSaveButton.onClick.RemoveListener(SaveEditedMemory);
-            targetClearButon.onClick.RemoveListener(ClearDescriptionTotaly);
+            targetClearButon.onClick.RemoveListener(ClearDescriptionTotally);
 
             descriptopnInputField.onValueChanged.RemoveListener(OnOnInputFieldsChange);
             titleInputField.onValueChanged.RemoveListener(OnOnInputFieldsChange);
@@ -36,19 +35,25 @@ namespace _Scripts
 
         private void CancelButtonClick()
         {
-            SetActive(false);
+            UiManager.Instance.DisplayHome();
         }
 
-        private void ClearDescriptionTotaly()
+        private void ClearDescriptionTotally()
         {
             descriptopnInputField.text = "";
+            titleInputField.text = "";
         }
 
-        public void EnableEditingForThisMemory(MemoryContainer targetMemory)
+        public void SetUpForWritingDiary(MemoryContainer targetMemory)
         {
             _targetMemory = targetMemory;
             SetUpInformationForEditing();
-            SetActive(true);
+        }
+
+        public void SetUpForWritingDiary()
+        {
+            _targetMemory = new MemoryContainer();
+            SetUpInformationForEditing();
         }
 
         void SetUpInformationForEditing()
@@ -64,18 +69,20 @@ namespace _Scripts
                 () =>
                 {
                     ApplyUserChangesToTargetMemory();
-                    _manager.UpdateThisEditedMemory(_targetMemory);
-                    SetActive(false);
+                    MemoryManager.Instance.UpdateThisEditedMemoryIfExists(_targetMemory);
+                    UiManager.Instance.DisplayHome();
                 },
                 "خیر",
                 "بله, ثبت کن");
         }
+
         void ApplyUserChangesToTargetMemory()
         {
             _targetMemory.UpdateTitle(titleInputField.text);
             _targetMemory.UpdateMemoryDescription(descriptopnInputField.text);
             _targetMemory.SetLastUpdateTime(DateTime.Now);
         }
+
         void OnOnInputFieldsChange(string arg0)
         {
             UpdateSaveButtonInteractable();

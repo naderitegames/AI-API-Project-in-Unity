@@ -33,6 +33,7 @@
   &quot;keyToString&quot;: {
     &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
@@ -93,7 +94,8 @@
       <workItem from="1741207059421" duration="696000" />
       <workItem from="1741354070196" duration="16467000" />
       <workItem from="1745087432685" duration="33970000" />
-      <workItem from="1745304429863" duration="43399000" />
+      <workItem from="1745304429863" duration="43762000" />
+      <workItem from="1745506394187" duration="8494000" />
     </task>
     <servers />
   </component>

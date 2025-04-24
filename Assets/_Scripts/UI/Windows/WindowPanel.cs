@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Scripts
@@ -8,13 +9,14 @@ namespace _Scripts
     [RequireComponent(typeof(CanvasGroup))]
     public class WindowPanel : MonoBehaviour
     {
-        CanvasGroup _canvasGroup;
+        [Tooltip("If it is empty,it will take its own canvas group component")]
+        [SerializeField] CanvasGroup canvasGroup;
         [SerializeField] UnityEvent OnWindowActived;
-        public CanvasGroup CanvasGroup => _canvasGroup;
+        public CanvasGroup CanvasGroup => canvasGroup;
 
         protected virtual void Awake()
         {
-            _canvasGroup = GetComponent<CanvasGroup>();
+            canvasGroup = GetComponent<CanvasGroup>();
         }
 
         public virtual void SetActive(bool isActive)
@@ -24,9 +26,9 @@ namespace _Scripts
                 OnWindowActived?.Invoke();
             }
 
-            _canvasGroup.alpha = isActive ? 1 : 0;
-            _canvasGroup.interactable = isActive;
-            _canvasGroup.blocksRaycasts = isActive;
+            canvasGroup.alpha = isActive ? 1 : 0;
+            canvasGroup.interactable = isActive;
+            canvasGroup.blocksRaycasts = isActive;
         }
     }
 }

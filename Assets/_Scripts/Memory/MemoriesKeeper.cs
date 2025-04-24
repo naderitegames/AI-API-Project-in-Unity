@@ -12,22 +12,21 @@ namespace _Scripts
     {
         [SerializeField] MemoryManager _memoryManager;
         [SerializeField] MemoryDisplay memoryDisplayPrefab;
+        [SerializeField] GameObject _noMemoriesFoundText;
+        [SerializeField] RectTransform otherMemoriesPlace;
+        [SerializeField] RectTransform pinnedMemoriesPlace;
         List<MemoryContainer> _memories;
         private ObjectPool<MemoryDisplay> _pinnedDisplayersPool;
         private ObjectPool<MemoryDisplay> _displayersPool;
-        [SerializeField] GameObject _noMemoriesFoundText;
-        [SerializeField] RectTransform contentPlace;
-        [SerializeField] RectTransform otherMemoriesPlace;
-        [SerializeField] RectTransform pinnedMemoriesPlace;
 
         private void Awake()
         {
             _displayersPool =
-                new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 5, otherMemoriesPlace.transform, false);
+                new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 0, otherMemoriesPlace.transform, false);
             _pinnedDisplayersPool =
-                new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 5, pinnedMemoriesPlace.transform, false);
+                new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 0, pinnedMemoriesPlace.transform, false);
         }
-
+        
         private void OnEnable()
         {
             RefreshDisplayers();
@@ -61,9 +60,14 @@ namespace _Scripts
 
         void DisableAllDisplayers()
         {
-            for (int i = 0; i < contentPlace.childCount; i++)
+            for (int i = 0; i < otherMemoriesPlace.childCount; i++)
             {
-                contentPlace.GetChild(i).gameObject.SetActive(false);
+                otherMemoriesPlace.GetChild(i).gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < pinnedMemoriesPlace.childCount; i++)
+            {
+                pinnedMemoriesPlace.GetChild(i).gameObject.SetActive(false);
             }
         }
 

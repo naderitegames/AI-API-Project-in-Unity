@@ -92,11 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetOpeningButton: {fileID: 9221753345539657821}
-  charLimitationForDescription: 0
-  charLimitationForTitle: 0
   descriptionPlace: {fileID: 8870167546838450734}
   titlePlace: {fileID: 9099834808831292055}
-  creationTimePlace: {fileID: 0}
   lastModifiedTimePlace: {fileID: 38111557930122296}
   contextMenu: {fileID: 9177665008152546142}
 --- !u!1 &1824464666703457118

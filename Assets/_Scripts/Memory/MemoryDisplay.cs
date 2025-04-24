@@ -12,7 +12,7 @@ namespace _Scripts
     {
         private MemoryManager _manager;
         [SerializeField] Button targetOpeningButton;
-        
+
         //[SerializeField] private int charLimitationForDescription;
         //[SerializeField] private int charLimitationForTitle;
         [SerializeField] RTLTextMeshPro descriptionPlace;
@@ -65,7 +65,7 @@ namespace _Scripts
                 var targetDescription = _memory.Summary == "" ? _memory.Description : _memory.Summary;
                 descriptionPlace.text = targetDescription;
                 lastModifiedTimePlace.text = _memory.LastUpdateTime.ToString(CultureInfo.InvariantCulture);
-                
+
                 /*titlePlace.text = GetShortPreview(_memory.Title, charLimitationForTitle);
                 var targetDescription = _memory.Summary == "" ? _memory.Description : _memory.Summary;
                 descriptionPlace.text = GetShortPreview(targetDescription, charLimitationForDescription);
@@ -116,7 +116,7 @@ namespace _Scripts
         public void TryEditingThisMemory()
         {
             UiManager.Instance.DisplayThisWarning("از ویرایش خاطره اطمینان دارید؟!",
-                () => { _manager.OpenEditWindowForThisMemory(_memory); }, "خیر", "بله");
+                () => { UiManager.Instance.OpenNewDiaryEditWindow(_memory); }, "خیر", "بله");
         }
 
         public void ChangeSelectionStateTo(bool b)

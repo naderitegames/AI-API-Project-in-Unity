@@ -18,8 +18,10 @@ namespace _Scripts
         [SerializeField] MemoryEditWindow editWindow;
         private string _memoryDataPath;
 
+        public static MemoryManager Instance;
         private void Awake()
         {
+            Instance = this;
             _memoryDataPath = Application.persistentDataPath + "/MemoriesData.mData";
             LoadMemories();
         }
@@ -54,12 +56,6 @@ namespace _Scripts
                 throw;
             }
         }
-
-        public void OpenEditWindowForThisMemory(MemoryContainer memory)
-        {
-            editWindow.EnableEditingForThisMemory(memory);
-        }
-
         void AddToMemoriesAndSave(MemoryContainer memory)
         {
             try
@@ -100,7 +96,10 @@ namespace _Scripts
         {
             try
             {
-                SaveLoadSystem.Load<MemoryAppData>(_memoryDataPath, (d) => { _data = d; }, () => { }, () => { },
+                SaveLoadSystem.Load<MemoryAppData>(_memoryDataPath,
+                    (d) => { _data = d; },
+                    () => { },
+                    SaveMemoriesAndRefresh,// it will save an empty file (with one sample diary)
                     (e) => throw e);
             }
             catch (Exception e)
@@ -130,7 +129,7 @@ namespace _Scripts
                 updated.UpdateId(memory.ID);
                 updated.UpdateSummary(summary);
 
-                _data.UpdateMemoryById(updated);
+                _data.UpdateMemoryByIdOrMakeNewOne(updated);
                 SaveMemoriesAndRefresh();
             });
         }
@@ -150,9 +149,9 @@ namespace _Scripts
             return _data.Memories.FirstOrDefault(m => m.ID == target.ID);
         }
 
-        public void UpdateThisEditedMemory(MemoryContainer targetMemory)
+        public void UpdateThisEditedMemoryIfExists(MemoryContainer targetMemory)
         {
-            _data.UpdateMemoryById(targetMemory);
+            _data.UpdateMemoryByIdOrMakeNewOne(targetMemory);
             SaveMemoriesAndRefresh();
         }
     }
