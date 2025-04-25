@@ -14,6 +14,8 @@ namespace _Scripts
         [SerializeField] Button targetOpeningButton;
         [SerializeField] Toggle targetSelectionToggle;
 
+        [SerializeField] private Image targetPinnedIcon;
+
         //[SerializeField] private int charLimitationForDescription;
         //[SerializeField] private int charLimitationForTitle;
         [SerializeField] RTLTextMeshPro descriptionPlace;
@@ -65,6 +67,7 @@ namespace _Scripts
         public void UpdateMemory(MemoryContainer memory)
         {
             _memory = memory;
+            targetPinnedIcon.gameObject.SetActive(_memory.IsPinned);
             RefreshMemory();
         }
 

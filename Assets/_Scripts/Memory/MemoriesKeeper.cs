@@ -26,7 +26,7 @@ namespace _Scripts
             _pinnedDisplayersPool =
                 new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 0, pinnedMemoriesPlace.transform, false);
         }
-        
+
         private void OnEnable()
         {
             RefreshDisplayers();
@@ -56,6 +56,9 @@ namespace _Scripts
                 DisableAllDisplayers();
                 _noMemoriesFoundText.SetActive(true);
             }
+
+            pinnedMemoriesPlace.gameObject.SetActive(pinnedMemoriesPlace.transform.childCount > 0);
+            otherMemoriesPlace.gameObject.SetActive(otherMemoriesPlace.transform.childCount > 0);
         }
 
         void DisableAllDisplayers()

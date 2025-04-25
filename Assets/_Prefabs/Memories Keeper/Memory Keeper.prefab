@@ -636,7 +636,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8886506866566326271, guid: f2c9f069b8f114c4a85005d4323753e5, type: 3}
       propertyPath: m_CellSize.y
-      value: 800
+      value: 700
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2c9f069b8f114c4a85005d4323753e5, type: 3}
