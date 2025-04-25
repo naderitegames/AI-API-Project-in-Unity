@@ -12,6 +12,7 @@ namespace _Scripts
     {
         private MemoryManager _manager;
         [SerializeField] Button targetOpeningButton;
+        [SerializeField] Toggle targetSelectionToggle;
 
         //[SerializeField] private int charLimitationForDescription;
         //[SerializeField] private int charLimitationForTitle;
@@ -25,6 +26,7 @@ namespace _Scripts
 
         private MemoryContainer _memory;
         static Action OnOtherContextMenuWillBeOpen;
+        private static Action OnSelectionsChanged;
         public bool IsSelected => isSelected;
         private bool isSelected;
 
@@ -32,12 +34,21 @@ namespace _Scripts
         {
             contextMenu.SetActive(false);
             OnOtherContextMenuWillBeOpen += OnOnOtherContextMenuWillBeOpen;
+            targetOpeningButton.onClick.AddListener(TryOpeningThisMemory);
+            OnSelectionsChanged += OnOnSelectionsChanged;
+            targetSelectionToggle.onValueChanged.AddListener(ChangeSelectionStateTo);
             RefreshMemory();
+            isSelected = false;
+            targetSelectionToggle.isOn = false;
+            targetSelectionToggle.gameObject.SetActive(false);
         }
 
         private void OnDisable()
         {
             OnOtherContextMenuWillBeOpen -= OnOnOtherContextMenuWillBeOpen;
+            targetOpeningButton.onClick.RemoveListener(TryOpeningThisMemory);
+            OnSelectionsChanged -= OnOnSelectionsChanged;
+            targetSelectionToggle.onValueChanged.RemoveListener(ChangeSelectionStateTo);
         }
 
         private void OnOnOtherContextMenuWillBeOpen()
@@ -119,6 +130,16 @@ namespace _Scripts
                 () => { UiManager.Instance.OpenNewDiaryEditWindow(_memory); }, "خیر", "بله");
         }
 
+        public void TryOpeningThisMemory()
+        {
+            UiManager.Instance.OpenNewDiaryEditWindow(_memory);
+        }
+
+        public void ChangeSelectionStateTo()
+        {
+            ChangeSelectionStateTo(!isSelected);
+        }
+
         public void ChangeSelectionStateTo(bool b)
         {
             isSelected = b;
@@ -128,6 +149,8 @@ namespace _Scripts
                 if (!SelectedDisplayers.Contains(this))
                 {
                     SelectedDisplayers.Add(this);
+                    contextMenu.SetActive(false);
+                    OnSelectionsChanged?.Invoke();
                 }
             }
             else
@@ -135,7 +158,21 @@ namespace _Scripts
                 if (SelectedDisplayers.Contains(this))
                 {
                     SelectedDisplayers.Remove(this);
+                    OnSelectionsChanged?.Invoke();
                 }
+            }
+        }
+
+        private void OnOnSelectionsChanged()
+        {
+            if (SelectedDisplayers.Count >= 1)
+            {
+                targetSelectionToggle.gameObject.SetActive(true);
+                targetSelectionToggle.isOn = isSelected;
+            }
+            else
+            {
+                targetSelectionToggle.gameObject.SetActive(false);
             }
         }
     }

@@ -14,7 +14,7 @@ namespace _Scripts
         public MemoryAppData()
         {
             _memories = new List<MemoryContainer>();
-            AddMemory(new MemoryContainer("امروز اولین روزی هست که از این برنامه استفاده میکنم.","اولین استفاده"));
+            AddMemory(new MemoryContainer("امروز اولین روزی هست که از این برنامه استفاده میکنم.", "اولین استفاده"));
         }
 
         public void AddMemory(MemoryContainer memory)
@@ -55,7 +55,7 @@ namespace _Scripts
             }
 
             AddMemory(targetMemory);
-            Debug.LogError("diary did not find but added");
+            Debug.Log("diary did not find but added");
             //UnityEngine.Debug.LogWarning($"❗ خاطره‌ای با ID {targetMemory.ID} پیدا نشد.");
         }
     }
