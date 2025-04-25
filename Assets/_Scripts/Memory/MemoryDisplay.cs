@@ -10,7 +10,7 @@ namespace _Scripts
 {
     public class MemoryDisplay : MonoBehaviour
     {
-        private MemoryManager _manager;
+        private MemoryManager _manager => MemoryManager.Instance;
         [SerializeField] Button targetOpeningButton;
         [SerializeField] Toggle targetSelectionToggle;
 
@@ -58,9 +58,8 @@ namespace _Scripts
             contextMenu.SetActive(false);
         }
 
-        public void SetUp(MemoryContainer memory, MemoryManager manager)
+        public void SetUp(MemoryContainer memory)
         {
-            this._manager = manager;
             UpdateMemory(memory);
         }
 

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace _Scripts
 {
-    public class MemoryManager : MonoBehaviour
+    public class MemoryManager : Singleton<MemoryManager>
     {
         [SerializeField] UiManager _uiManager;
         [SerializeField] MemoriesKeeper _memoriesKeeper;
@@ -18,10 +18,8 @@ namespace _Scripts
         [SerializeField] MemoryEditWindow editWindow;
         private string _memoryDataPath;
 
-        public static MemoryManager Instance;
         private void Awake()
         {
-            Instance = this;
             _memoryDataPath = Application.persistentDataPath + "/MemoriesData.mData";
             LoadMemories();
         }
@@ -92,7 +90,7 @@ namespace _Scripts
             _memoriesKeeper.RefreshDisplayers();
         }
 
-        public void LoadMemories()
+        void LoadMemories()
         {
             try
             {

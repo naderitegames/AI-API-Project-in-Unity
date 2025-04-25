@@ -1278,6 +1278,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7554450026097886999, guid: 66d03cbf6b47248408aa0f254cec01a9, type: 3}
+      propertyPath: memoryManager
+      value: 
+      objectReference: {fileID: 2057142949}
+    - target: {fileID: 7554450026097886999, guid: 66d03cbf6b47248408aa0f254cec01a9, type: 3}
       propertyPath: _memoryManager
       value: 
       objectReference: {fileID: 2057142949}
@@ -1388,6 +1392,14 @@ PrefabInstance:
     - target: {fileID: 7554450026097887019, guid: 66d03cbf6b47248408aa0f254cec01a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7554450026342177873, guid: 66d03cbf6b47248408aa0f254cec01a9, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7554450026342177873, guid: 66d03cbf6b47248408aa0f254cec01a9, type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7554450026342177875, guid: 66d03cbf6b47248408aa0f254cec01a9, type: 3}
       propertyPath: m_SizeDelta.y

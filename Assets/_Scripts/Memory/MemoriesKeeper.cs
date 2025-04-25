@@ -10,31 +10,31 @@ namespace _Scripts
 {
     public class MemoriesKeeper : MonoBehaviour
     {
-        [SerializeField] MemoryManager _memoryManager;
+        private MemoryManager memoryManager => MemoryManager.Instance;
         [SerializeField] MemoryDisplay memoryDisplayPrefab;
         [SerializeField] GameObject _noMemoriesFoundText;
         [SerializeField] RectTransform otherMemoriesPlace;
         [SerializeField] RectTransform pinnedMemoriesPlace;
         List<MemoryContainer> _memories;
         private ObjectPool<MemoryDisplay> _pinnedDisplayersPool;
-        private ObjectPool<MemoryDisplay> _displayersPool;
+        private ObjectPool<MemoryDisplay> _otherDisplayersPool;
 
         private void Awake()
         {
-            _displayersPool =
+            _otherDisplayersPool =
                 new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 0, otherMemoriesPlace.transform, false);
             _pinnedDisplayersPool =
                 new ObjectPool<MemoryDisplay>(memoryDisplayPrefab, 0, pinnedMemoriesPlace.transform, false);
         }
 
-        private void OnEnable()
+        private void Start()
         {
             RefreshDisplayers();
         }
 
         public void RefreshDisplayers()
         {
-            _memories = _memoryManager.GetAllMemories();
+            _memories = memoryManager.GetAllMemories();
             if (_memories.Count >= 1)
                 RefreshDisplayers(_memories);
         }
@@ -57,8 +57,8 @@ namespace _Scripts
                 _noMemoriesFoundText.SetActive(true);
             }
 
-            pinnedMemoriesPlace.gameObject.SetActive(pinnedMemoriesPlace.transform.childCount > 0);
-            otherMemoriesPlace.gameObject.SetActive(otherMemoriesPlace.transform.childCount > 0);
+            pinnedMemoriesPlace.gameObject.SetActive(_pinnedDisplayersPool.GetActiveObjects().Count > 0);
+            otherMemoriesPlace.gameObject.SetActive(_otherDisplayersPool.GetActiveObjects().Count > 0);
         }
 
         void DisableAllDisplayers()
@@ -72,13 +72,16 @@ namespace _Scripts
             {
                 pinnedMemoriesPlace.GetChild(i).gameObject.SetActive(false);
             }
+
+            pinnedMemoriesPlace.gameObject.SetActive(false);
+            otherMemoriesPlace.gameObject.SetActive(false);
         }
 
-        void DisplayAnotherOneMemory(MemoryContainer container)
+        void DisplayAnotherOneMemory(MemoryContainer target)
         {
-            var newDisplay = container.IsPinned ? _pinnedDisplayersPool.GetObject() : _displayersPool.GetObject();
+            var newDisplay = target.IsPinned ? _pinnedDisplayersPool.GetObject() : _otherDisplayersPool.GetObject();
             newDisplay.transform.localScale = Vector3.one;
-            newDisplay.SetUp(container, _memoryManager);
+            newDisplay.SetUp(target);
         }
     }
 }
