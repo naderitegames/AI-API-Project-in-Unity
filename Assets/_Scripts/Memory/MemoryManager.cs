@@ -15,7 +15,6 @@ namespace _Scripts
         [SerializeField] private GeminiAiManager _aiManager;
         [SerializeField] private int summaryLineCount;
         MemoryAppData _data = new MemoryAppData();
-        [SerializeField] MemoryEditWindow editWindow;
         private string _memoryDataPath;
 
         private void Awake()
@@ -116,7 +115,7 @@ namespace _Scripts
                 _memoriesKeeper.RefreshDisplayers();
         }
 
-        public void SummarizeThisMemoryThenSave(MemoryContainer memory)
+        public void SummarizeThisMemoryThenSave(MemoryContainer memory ,Action<MemoryContainer> onComplete = null)
         {
             if (!MemorySummarizer.CanSummarize(memory, _uiManager)) return;
 
@@ -126,9 +125,9 @@ namespace _Scripts
                 MemoryContainer updated = new MemoryContainer(memory.Description, memory.Title);
                 updated.UpdateId(memory.ID);
                 updated.UpdateSummary(summary);
-
                 _data.UpdateMemoryByIdOrMakeNewOne(updated);
                 SaveMemoriesAndRefresh();
+                onComplete?.Invoke(updated);
             });
         }
 

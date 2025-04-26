@@ -60,5 +60,12 @@ namespace _Scripts
             _onOkClicked = null;
             SetActive(true);
         }
+        public void UpdateTextAndDisplay(string message)
+        {
+            targetCancelBtton.gameObject.SetActive(false);
+            targetOkButton.gameObject.SetActive(false);
+            warningText.text = message;
+            SetActive(true);
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace _Scripts
         {
             if (string.IsNullOrWhiteSpace(memory.Description))
             {
-                ui.DisplayThisWarning("متن خاطره خالی است و قابل خلاصه‌سازی نیست.");
+                ui.DisplayThisWarning("متن خاطره خالی است و قابل خلاصه‌سازی نیست.","بسیار خب");
                 return false;
             }
 
@@ -31,7 +31,10 @@ namespace _Scripts
             {
                 ui.DisplayThisWarning(
                     "این خاطره قبلاً خلاصه شده. دوباره خلاصه شود؟",
-                    () => SummarizeAsync(memory, ai, ui, summarizeLine, onSummaryReady),
+                    () =>
+                    {
+                        SummarizeAsync(memory, ai, ui, summarizeLine, onSummaryReady);
+                    },
                     "نه، بی‌خیال",
                     "آره، دوباره خلاصه کن"
                 );
@@ -47,21 +50,27 @@ namespace _Scripts
         {
             try
             {
-                string prompt = $"این متن را در " + $"{summaryLine}" + " خط خلاصه کن :" + $"\n\n{memory.Description}";
-                string summary = await ai.AIClient.SendPromptAsync(prompt);
-                if (!string.IsNullOrWhiteSpace(summary))
+                ui.DisplayThisWarning("کمی صبر کنید");
+                string prompt = $"این متن را در " +
+                                $"{summaryLine}" +
+                                " خط خلاصه کن و حرف اضافه ای نزن که معلوم بشه AI اینکارو کرده :" +
+                                $"\n\n{memory.Description}";
+                string newSummary = await ai.AIClient.SendPromptAsync(prompt);
+                if (!string.IsNullOrWhiteSpace(newSummary))
                 {
-                    onSummaryReady?.Invoke(summary);
+                    onSummaryReady?.Invoke(newSummary);
+                    ui.DisplayThisWarning("متن شما از هوش مصنوعی دریافت شد!","بسیار خب");
+
                 }
                 else
                 {
-                    ui.DisplayThisWarning("پاسخی از هوش مصنوعی دریافت نشد.");
+                    ui.DisplayThisWarning("پاسخی از هوش مصنوعی دریافت نشد.","بسیار خب");
                 }
             }
             catch (Exception e)
             {
                 Debug.LogError("❌ خطا در خلاصه‌سازی: " + e.Message);
-                ui.DisplayThisWarning("مشکلی در ارتباط با AI پیش آمد.");
+                ui.DisplayThisWarning("مشکلی در ارتباط با AI پیش آمد.","سیار خب");
             }
         }
     }

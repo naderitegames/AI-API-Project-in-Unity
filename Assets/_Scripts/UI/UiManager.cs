@@ -69,7 +69,7 @@ namespace _Scripts
             _warningWindow.UpdateTextAndDisplay(warningText, job, cancelText, okText);
         }
 
-        public void DisplayThisWarning(string message, string okText = " بسیار خب!")
+        public void DisplayThisWarning(string message, string okText)
         {
             _warningWindow.UpdateTextAndDisplay(message, okText);
         }
@@ -89,6 +89,11 @@ namespace _Scripts
         public void DisplayHome()
         {
             ActivatePanel(WindowType.Home);
+        }
+
+        public void DisplayThisWarning(string description)
+        {
+            _warningWindow.UpdateTextAndDisplay(description);
         }
     }
 }

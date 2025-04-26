@@ -48,7 +48,9 @@ namespace _Scripts
                 {
                     _memories[i].UpdateMemoryDescription(targetMemory.Description);
                     _memories[i].UpdateSummary(targetMemory.Summary);
-                    _memories[i].UpdateTitle(targetMemory.Title);
+                    _memories[i].UpdateTitle(targetMemory.Title == ""
+                        ? "خاطره شماره " + _memories.Count
+                        : targetMemory.Title);
                     _memories[i].SetLastUpdateTime(DateTime.Now);
                     return;
                 }

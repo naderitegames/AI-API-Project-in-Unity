@@ -43,6 +43,7 @@ namespace _Scripts
             isSelected = false;
             targetSelectionToggle.isOn = false;
             targetSelectionToggle.gameObject.SetActive(false);
+            contextMenu.SetActive(false);
         }
 
         private void OnDisable()
