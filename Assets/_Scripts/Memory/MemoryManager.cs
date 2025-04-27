@@ -12,7 +12,7 @@ namespace _Scripts
     {
         [SerializeField] UiManager _uiManager;
         [SerializeField] MemoriesKeeper _memoriesKeeper;
-        [SerializeField] private GeminiAiManager _aiManager;
+        private GeminiAiManager AiManager=>GeminiAiManager.Instance;
         [SerializeField] private int summaryLineCount;
         MemoryAppData _data = new MemoryAppData();
         private string _memoryDataPath;
@@ -23,7 +23,7 @@ namespace _Scripts
             LoadMemories();
         }
 
-        public List<MemoryContainer> GetAllMemories()
+        public List<DiaryContainer> GetAllMemories()
         {
             return _data.Memories;
         }
@@ -45,7 +45,7 @@ namespace _Scripts
                 }
 
                 memoryInput.RefreshInputs();
-                AddToMemoriesAndSave(new MemoryContainer(description, title));
+                AddToMemoriesAndSave(new DiaryContainer(description, title));
             }
             catch (Exception e)
             {
@@ -53,11 +53,11 @@ namespace _Scripts
                 throw;
             }
         }
-        void AddToMemoriesAndSave(MemoryContainer memory)
+        void AddToMemoriesAndSave(DiaryContainer diary)
         {
             try
             {
-                _data.AddMemory(memory);
+                _data.AddMemory(diary);
                 SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
             }
             catch (Exception e)
@@ -67,11 +67,11 @@ namespace _Scripts
             }
         }
 
-        public void RemoveFromMemories(MemoryContainer memory)
+        public void RemoveFromMemories(DiaryContainer diary)
         {
             try
             {
-                _data.Remove(memory);
+                _data.Remove(diary);
                 SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
                 _memoriesKeeper.RefreshDisplayers();
             }
@@ -82,9 +82,9 @@ namespace _Scripts
             }
         }
 
-        public void ToggleThisMemoryPinState(MemoryContainer memory)
+        public void ToggleThisMemoryPinState(DiaryContainer diary)
         {
-            GetMemoryById(memory).SetPinStateTo(!memory.IsPinned);
+            GetMemoryById(diary).SetPinStateTo(!diary.IsPinned);
             SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
             _memoriesKeeper.RefreshDisplayers();
         }
@@ -115,15 +115,15 @@ namespace _Scripts
                 _memoriesKeeper.RefreshDisplayers();
         }
 
-        public void SummarizeThisMemoryThenSave(MemoryContainer memory ,Action<MemoryContainer> onComplete = null)
+        public void SummarizeThisMemoryThenSave(DiaryContainer diary ,Action<DiaryContainer> onComplete = null)
         {
-            if (!MemorySummarizer.CanSummarize(memory, _uiManager)) return;
+            if (!MemorySummarizer.CanSummarize(diary, _uiManager)) return;
 
-            MemorySummarizer.TrySummarizeWithConfirmation(memory, _aiManager, _uiManager, summaryLineCount, (summary) =>
+            MemorySummarizer.TrySummarizeWithConfirmation(diary, AiManager, _uiManager, summaryLineCount, (summary) =>
             {
                 // ساخت کپی برای جایگزینی
-                MemoryContainer updated = new MemoryContainer(memory.Description, memory.Title);
-                updated.UpdateId(memory.ID);
+                DiaryContainer updated = new DiaryContainer(diary.Description, diary.Title);
+                updated.UpdateId(diary.ID);
                 updated.UpdateSummary(summary);
                 _data.UpdateMemoryByIdOrMakeNewOne(updated);
                 SaveMemoriesAndRefresh();
@@ -141,14 +141,14 @@ namespace _Scripts
         }
 
 
-        MemoryContainer GetMemoryById(MemoryContainer target)
+        DiaryContainer GetMemoryById(DiaryContainer target)
         {
             return _data.Memories.FirstOrDefault(m => m.ID == target.ID);
         }
 
-        public void UpdateThisEditedMemoryIfExists(MemoryContainer targetMemory)
+        public void UpdateThisEditedMemoryIfExists(DiaryContainer targetDiary)
         {
-            _data.UpdateMemoryByIdOrMakeNewOne(targetMemory);
+            _data.UpdateMemoryByIdOrMakeNewOne(targetDiary);
             SaveMemoriesAndRefresh();
         }
     }

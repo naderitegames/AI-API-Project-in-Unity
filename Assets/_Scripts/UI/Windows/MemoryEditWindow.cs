@@ -7,7 +7,7 @@ namespace _Scripts
 {
     public class MemoryEditWindow : WindowPanel
     {
-        MemoryContainer _targetMemory;
+        DiaryContainer _targetDiary;
         [SerializeField] TMP_InputField descriptopnInputField;
         [SerializeField] TMP_InputField summaryInputField;
         [SerializeField] TMP_InputField titleInputField;
@@ -49,10 +49,10 @@ namespace _Scripts
 
         private void SummurizeDescriptionNow()
         {
-            _targetMemory.UpdateMemoryDescription(descriptopnInputField.text);
-            MemoryManager.Instance.SummarizeThisMemoryThenSave(_targetMemory, (t) =>
+            _targetDiary.UpdateMemoryDescription(descriptopnInputField.text);
+            MemoryManager.Instance.SummarizeThisMemoryThenSave(_targetDiary, (t) =>
             {
-                _targetMemory = t;
+                _targetDiary = t;
                 SetUpInformationForEditing();
             });
         }
@@ -88,23 +88,23 @@ namespace _Scripts
             summaryInputField.text = "";
         }
 
-        public void SetUpForWritingDiary(MemoryContainer targetMemory)
+        public void SetUpForWritingDiary(DiaryContainer targetDiary)
         {
-            _targetMemory = targetMemory;
+            _targetDiary = targetDiary;
             SetUpInformationForEditing();
         }
 
         public void SetUpForWritingDiary()
         {
-            _targetMemory = new MemoryContainer();
+            _targetDiary = new DiaryContainer();
             SetUpInformationForEditing();
         }
 
         void SetUpInformationForEditing()
         {
-            descriptopnInputField.text = _targetMemory.Description;
-            titleInputField.text = _targetMemory.Title;
-            summaryInputField.text = _targetMemory.Summary;
+            descriptopnInputField.text = _targetDiary.Description;
+            titleInputField.text = _targetDiary.Title;
+            summaryInputField.text = _targetDiary.Summary;
         }
 
         void SaveEditedMemory()
@@ -117,7 +117,7 @@ namespace _Scripts
                 () =>
                 {
                     ApplyUserChangesToTargetMemory();
-                    MemoryManager.Instance.UpdateThisEditedMemoryIfExists(_targetMemory);
+                    MemoryManager.Instance.UpdateThisEditedMemoryIfExists(_targetDiary);
                     UiManager.Instance.DisplayHome();
                 },
                 "خیر",
@@ -126,10 +126,10 @@ namespace _Scripts
 
         void ApplyUserChangesToTargetMemory()
         {
-            _targetMemory.UpdateTitle(titleInputField.text);
-            _targetMemory.UpdateMemoryDescription(descriptopnInputField.text);
-            _targetMemory.UpdateSummary(summaryInputField.text);
-            _targetMemory.SetLastUpdateTime(DateTime.Now);
+            _targetDiary.UpdateTitle(titleInputField.text);
+            _targetDiary.UpdateMemoryDescription(descriptopnInputField.text);
+            _targetDiary.UpdateSummary(summaryInputField.text);
+            _targetDiary.SetLastUpdateTime(DateTime.Now);
         }
 
         void OnOnInputFieldsChange(string arg0)
@@ -139,11 +139,11 @@ namespace _Scripts
 
         void UpdateSaveButtonInteractable()
         {
-            if (descriptopnInputField.text != _targetMemory.Description)
-                _targetMemory.UpdateSummary("");
-            targetSaveButton.interactable = descriptopnInputField.text != _targetMemory.Description ||
-                                            titleInputField.text != _targetMemory.Title ||
-                                            summaryInputField.text != _targetMemory.Summary;
+            if (descriptopnInputField.text != _targetDiary.Description)
+                _targetDiary.UpdateSummary("");
+            targetSaveButton.interactable = descriptopnInputField.text != _targetDiary.Description ||
+                                            titleInputField.text != _targetDiary.Title ||
+                                            summaryInputField.text != _targetDiary.Summary;
             targetClearButon.interactable = descriptopnInputField.text != "";
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using RTLTMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -26,9 +27,9 @@ namespace _Scripts
         [FormerlySerializedAs("memoryContextMenu")] [SerializeField]
         ContextMenu contextMenu;
 
-        private MemoryContainer _memory;
+        private DiaryContainer _diary;
         static Action OnOtherContextMenuWillBeOpen;
-        private static Action OnSelectionsChanged;
+        public static Action<List<MemoryDisplay>> OnSelectionsChanged;
         public bool IsSelected => isSelected;
         private bool isSelected;
 
@@ -59,26 +60,26 @@ namespace _Scripts
             contextMenu.SetActive(false);
         }
 
-        public void SetUp(MemoryContainer memory)
+        public void SetUp(DiaryContainer diary)
         {
-            UpdateMemory(memory);
+            UpdateMemory(diary);
         }
 
-        public void UpdateMemory(MemoryContainer memory)
+        public void UpdateMemory(DiaryContainer diary)
         {
-            _memory = memory;
-            targetPinnedIcon.gameObject.SetActive(_memory.IsPinned);
+            _diary = diary;
+            targetPinnedIcon.gameObject.SetActive(_diary.IsPinned);
             RefreshMemory();
         }
 
         void RefreshMemory()
         {
-            if (_memory != null)
+            if (_diary != null)
             {
-                titlePlace.text = _memory.Title;
-                var targetDescription = _memory.Summary == "" ? _memory.Description : _memory.Summary;
+                titlePlace.text = _diary.Title;
+                var targetDescription = _diary.Summary == "" ? _diary.Description : _diary.Summary;
                 descriptionPlace.text = targetDescription;
-                lastModifiedTimePlace.text = _memory.LastUpdateTime.ToString(CultureInfo.InvariantCulture);
+                lastModifiedTimePlace.text = _diary.LastUpdateTime.ToString(CultureInfo.InvariantCulture);
 
                 /*titlePlace.text = GetShortPreview(_memory.Title, charLimitationForTitle);
                 var targetDescription = _memory.Summary == "" ? _memory.Description : _memory.Summary;
@@ -114,28 +115,28 @@ namespace _Scripts
         public void DeleteThisMemory()
         {
             UiManager.Instance.DisplayThisWarning("از حذف اطمینان دارید؟!",
-                () => { _manager.RemoveFromMemories(_memory); }, "خیر", "بله");
+                () => { _manager.RemoveFromMemories(_diary); }, "خیر", "بله");
         }
 
         public void TogglePinState()
         {
-            _manager.ToggleThisMemoryPinState(_memory);
+            _manager.ToggleThisMemoryPinState(_diary);
         }
 
         public void SummarizeThisMemory()
         {
-            _manager.SummarizeThisMemoryThenSave(_memory);
+            _manager.SummarizeThisMemoryThenSave(_diary);
         }
 
         public void TryEditingThisMemory()
         {
             UiManager.Instance.DisplayThisWarning("از ویرایش خاطره اطمینان دارید؟!",
-                () => { UiManager.Instance.OpenNewDiaryEditWindow(_memory); }, "خیر", "بله");
+                () => { UiManager.Instance.OpenNewDiaryEditWindow(_diary); }, "خیر", "بله");
         }
 
         public void TryOpeningThisMemory()
         {
-            UiManager.Instance.OpenNewDiaryEditWindow(_memory);
+            UiManager.Instance.OpenNewDiaryEditWindow(_diary);
         }
 
         public void ChangeSelectionStateTo()
@@ -153,7 +154,7 @@ namespace _Scripts
                 {
                     SelectedDisplayers.Add(this);
                     contextMenu.SetActive(false);
-                    OnSelectionsChanged?.Invoke();
+                    OnSelectionsChanged?.Invoke(SelectedDisplayers);
                 }
             }
             else
@@ -161,14 +162,14 @@ namespace _Scripts
                 if (SelectedDisplayers.Contains(this))
                 {
                     SelectedDisplayers.Remove(this);
-                    OnSelectionsChanged?.Invoke();
+                    OnSelectionsChanged?.Invoke(SelectedDisplayers);
                 }
             }
         }
 
-        private void OnOnSelectionsChanged()
+        private void OnOnSelectionsChanged(List<MemoryDisplay> selecteds)
         {
-            if (SelectedDisplayers.Count >= 1)
+            if (selecteds.Count >= 1)
             {
                 targetSelectionToggle.gameObject.SetActive(true);
                 targetSelectionToggle.isOn = isSelected;
@@ -177,6 +178,23 @@ namespace _Scripts
             {
                 targetSelectionToggle.gameObject.SetActive(false);
             }
+        }
+
+        public void ChatWithAI()
+        {
+            isSelected = true;
+            SelectedDisplayers.Add(this);
+            UiManager.Instance.DisplayChatForSelectedDiaries();
+        }
+
+        public DiaryContainer GetDiary()
+        {
+            return _diary;
+        }
+
+        public static void ClearSelectedDiaries()
+        {
+            SelectedDisplayers.Clear();
         }
     }
 }

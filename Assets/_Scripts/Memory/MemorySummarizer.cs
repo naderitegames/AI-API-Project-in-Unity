@@ -5,9 +5,9 @@ namespace _Scripts
 {
     public static class MemorySummarizer
     {
-        public static bool CanSummarize(MemoryContainer memory, UiManager ui)
+        public static bool CanSummarize(DiaryContainer diary, UiManager ui)
         {
-            if (string.IsNullOrWhiteSpace(memory.Description))
+            if (string.IsNullOrWhiteSpace(diary.Description))
             {
                 ui.DisplayThisWarning("متن خاطره خالی است و قابل خلاصه‌سازی نیست.","بسیار خب");
                 return false;
@@ -17,15 +17,15 @@ namespace _Scripts
         }
 
         public static void TrySummarizeWithConfirmation(
-            MemoryContainer memory,
+            DiaryContainer diary,
             GeminiAiManager ai,
             UiManager ui,
             int summarizeLine,
             Action<string> onSummaryReady)
         {
-            if (string.IsNullOrWhiteSpace(memory.Summary))
+            if (string.IsNullOrWhiteSpace(diary.Summary))
             {
-                SummarizeAsync(memory, ai, ui, summarizeLine, onSummaryReady);
+                SummarizeAsync(diary, ai, ui, summarizeLine, onSummaryReady);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace _Scripts
                     "این خاطره قبلاً خلاصه شده. دوباره خلاصه شود؟",
                     () =>
                     {
-                        SummarizeAsync(memory, ai, ui, summarizeLine, onSummaryReady);
+                        SummarizeAsync(diary, ai, ui, summarizeLine, onSummaryReady);
                     },
                     "نه، بی‌خیال",
                     "آره، دوباره خلاصه کن"
@@ -42,7 +42,7 @@ namespace _Scripts
         }
 
         private static async void SummarizeAsync(
-            MemoryContainer memory,
+            DiaryContainer diary,
             GeminiAiManager ai,
             UiManager ui,
             int summaryLine,
@@ -54,7 +54,7 @@ namespace _Scripts
                 string prompt = $"این متن را در " +
                                 $"{summaryLine}" +
                                 " خط خلاصه کن و حرف اضافه ای نزن که معلوم بشه AI اینکارو کرده :" +
-                                $"\n\n{memory.Description}";
+                                $"\n\n{diary.Description}";
                 string newSummary = await ai.AIClient.SendPromptAsync(prompt);
                 if (!string.IsNullOrWhiteSpace(newSummary))
                 {

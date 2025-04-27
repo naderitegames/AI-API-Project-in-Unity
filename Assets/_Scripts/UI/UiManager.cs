@@ -18,13 +18,31 @@ namespace _Scripts
     {
         //[SerializeField] AddMemoryWindow addWindowPanel;
         [SerializeField] MemoryEditWindow memoryEditWindow;
+        [SerializeField] private ChatWithAiManager chatWithAiManager;
         [SerializeField] HomeWindow homeWindowPanel;
         [SerializeField] ChatWindow chatWindowPanel;
         [SerializeField] private WarningWindow _warningWindow;
         Dictionary<WindowType, WindowPanel> _allPanels = new Dictionary<WindowType, WindowPanel>();
         WindowPanel _activePanel;
+        [SerializeField] ContextMenu selectedDiariesContextMenu;
 
         public static UiManager Instance { get; private set; }
+
+        private void OnEnable()
+        {
+            selectedDiariesContextMenu.gameObject.SetActive(false);
+            MemoryDisplay.OnSelectionsChanged += OnSelectionStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            MemoryDisplay.OnSelectionsChanged -= OnSelectionStateChanged;
+        }
+
+        private void OnSelectionStateChanged(List<MemoryDisplay> selectedDiaries)
+        {
+            selectedDiariesContextMenu.gameObject.SetActive(selectedDiaries.Count > 0);
+        }
 
         private void Awake()
         {
@@ -80,7 +98,7 @@ namespace _Scripts
             memoryEditWindow.SetUpForWritingDiary();
         }
 
-        public void OpenNewDiaryEditWindow(MemoryContainer c)
+        public void OpenNewDiaryEditWindow(DiaryContainer c)
         {
             ActivatePanel(WindowType.Edit);
             memoryEditWindow.SetUpForWritingDiary(c);
@@ -94,6 +112,18 @@ namespace _Scripts
         public void DisplayThisWarning(string description)
         {
             _warningWindow.UpdateTextAndDisplay(description);
+        }
+
+        public void DisplayChatForSelectedDiaries()
+        {
+            ActivatePanel(WindowType.Chat);
+            List<DiaryContainer> targetDiaries = new List<DiaryContainer>();
+            foreach (var target in MemoryDisplay.SelectedDisplayers)
+            {
+                targetDiaries.Add(target.GetDiary());
+            }
+
+            chatWithAiManager.PrepareForChat(targetDiaries);
         }
     }
 }

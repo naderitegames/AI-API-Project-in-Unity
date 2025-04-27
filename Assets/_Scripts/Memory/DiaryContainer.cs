@@ -4,7 +4,7 @@ using UnityEngine.Networking.Types;
 namespace _Scripts
 {
     [Serializable]
-    public class MemoryContainer
+    public class DiaryContainer
     {
         public string ID => _id;
         private string _id;
@@ -25,7 +25,7 @@ namespace _Scripts
         public bool IsPinned => _isPinned;
         bool _isPinned = false;
 
-        public MemoryContainer()
+        public DiaryContainer()
         {
             InitializeNewMemory("", "");
         }
@@ -35,7 +35,7 @@ namespace _Scripts
             _id = newId;
         }
 
-        public MemoryContainer(string description, string title)
+        public DiaryContainer(string description, string title)
         {
             InitializeNewMemory(title, description);
         }

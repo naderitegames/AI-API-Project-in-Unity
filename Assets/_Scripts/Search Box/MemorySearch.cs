@@ -7,11 +7,11 @@ namespace _Scripts
 {
     public static class MemorySearch
     {
-        public static List<MemoryContainer> SearchMemoriesByKeyword(string keyword,
-            List<MemoryContainer> targetMemories)
+        public static List<DiaryContainer> SearchMemoriesByKeyword(string keyword,
+            List<DiaryContainer> targetMemories)
         {
             if (string.IsNullOrWhiteSpace(keyword))
-                return new List<MemoryContainer>();
+                return new List<DiaryContainer>();
             keyword = keyword.ToLower();
             return targetMemories
                 .Where(memory =>

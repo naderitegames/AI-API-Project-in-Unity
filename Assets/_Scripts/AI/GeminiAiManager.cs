@@ -15,7 +15,7 @@ namespace _Scripts
         Aqa
     }
 
-    public class GeminiAiManager : MonoBehaviour
+    public class GeminiAiManager : Singleton<GeminiAiManager>
     {
         [SerializeField] string apiKey;
         private GeminiAIClient _aiClient;
@@ -34,7 +34,7 @@ namespace _Scripts
             { GeminiModel.Aqa, "models/aqa" }
         };
 
-        private void Awake()
+        public override void Awake()
         {
             _aiClient = new GeminiAIClient(apiKey, ModelMap[selectedGeminiModel]);
         }

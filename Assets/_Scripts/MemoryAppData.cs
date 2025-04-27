@@ -8,29 +8,29 @@ namespace _Scripts
     [Serializable]
     public class MemoryAppData
     {
-        private List<MemoryContainer> _memories;
-        public List<MemoryContainer> Memories => _memories;
+        private List<DiaryContainer> _memories;
+        public List<DiaryContainer> Memories => _memories;
 
         public MemoryAppData()
         {
-            _memories = new List<MemoryContainer>();
-            AddMemory(new MemoryContainer("امروز اولین روزی هست که از این برنامه استفاده میکنم.", "اولین استفاده"));
+            _memories = new List<DiaryContainer>();
+            AddMemory(new DiaryContainer("امروز اولین روزی هست که از این برنامه استفاده میکنم.", "اولین استفاده"));
         }
 
-        public void AddMemory(MemoryContainer memory)
+        public void AddMemory(DiaryContainer diary)
         {
-            if (!_memories.Contains(memory))
+            if (!_memories.Contains(diary))
             {
-                _memories.Add(memory);
+                _memories.Add(diary);
                 SortAscendingByCreationDate();
             }
         }
 
-        public void Remove(MemoryContainer memory)
+        public void Remove(DiaryContainer diary)
         {
-            if (_memories.Contains(memory))
+            if (_memories.Contains(diary))
             {
-                _memories.Remove(memory);
+                _memories.Remove(diary);
                 SortAscendingByCreationDate();
             }
         }
@@ -40,25 +40,24 @@ namespace _Scripts
             _memories = _memories.OrderBy(x => x.TargetDate).ToList();
         }
 
-        public void UpdateMemoryByIdOrMakeNewOne(MemoryContainer targetMemory)
+        public void UpdateMemoryByIdOrMakeNewOne(DiaryContainer targetDiary)
         {
             for (int i = 0; i < _memories.Count; i++)
             {
-                if (_memories[i].ID == targetMemory.ID)
+                if (_memories[i].ID == targetDiary.ID)
                 {
-                    _memories[i].UpdateMemoryDescription(targetMemory.Description);
-                    _memories[i].UpdateSummary(targetMemory.Summary);
-                    _memories[i].UpdateTitle(targetMemory.Title == ""
+                    _memories[i].UpdateMemoryDescription(targetDiary.Description);
+                    _memories[i].UpdateSummary(targetDiary.Summary);
+                    _memories[i].UpdateTitle(targetDiary.Title == ""
                         ? "خاطره شماره " + _memories.Count
-                        : targetMemory.Title);
+                        : targetDiary.Title);
                     _memories[i].SetLastUpdateTime(DateTime.Now);
                     return;
                 }
             }
 
-            AddMemory(targetMemory);
+            AddMemory(targetDiary);
             Debug.Log("diary did not find but added");
-            //UnityEngine.Debug.LogWarning($"❗ خاطره‌ای با ID {targetMemory.ID} پیدا نشد.");
         }
     }
 }

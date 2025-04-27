@@ -15,7 +15,7 @@ namespace _Scripts
         [SerializeField] GameObject _noMemoriesFoundText;
         [SerializeField] RectTransform otherMemoriesPlace;
         [SerializeField] RectTransform pinnedMemoriesPlace;
-        List<MemoryContainer> _memories;
+        List<DiaryContainer> _memories;
         private ObjectPool<MemoryDisplay> _pinnedDisplayersPool;
         private ObjectPool<MemoryDisplay> _otherDisplayersPool;
 
@@ -39,7 +39,7 @@ namespace _Scripts
                 RefreshDisplayers(_memories);
         }
 
-        public void RefreshDisplayers(List<MemoryContainer> targetMemories)
+        public void RefreshDisplayers(List<DiaryContainer> targetMemories)
         {
             if (targetMemories?.Count >= 1)
             {
@@ -77,7 +77,7 @@ namespace _Scripts
             otherMemoriesPlace.gameObject.SetActive(false);
         }
 
-        void DisplayAnotherOneMemory(MemoryContainer target)
+        void DisplayAnotherOneMemory(DiaryContainer target)
         {
             var newDisplay = target.IsPinned ? _pinnedDisplayersPool.GetObject() : _otherDisplayersPool.GetObject();
             newDisplay.transform.localScale = Vector3.one;
