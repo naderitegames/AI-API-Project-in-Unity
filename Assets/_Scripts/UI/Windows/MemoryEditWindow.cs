@@ -1,9 +1,9 @@
-using System;
+using _Scripts.Diary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Scripts
+namespace _Scripts.UI.Windows
 {
     public class MemoryEditWindow : WindowPanel
     {
@@ -49,7 +49,7 @@ namespace _Scripts
 
         private void SummurizeDescriptionNow()
         {
-            _targetDiary.UpdateMemoryDescription(descriptopnInputField.text);
+            _targetDiary.UpdateDiaryDescription(descriptopnInputField.text);
             MemoryManager.Instance.SummarizeThisMemoryThenSave(_targetDiary, (t) =>
             {
                 _targetDiary = t;
@@ -126,10 +126,7 @@ namespace _Scripts
 
         void ApplyUserChangesToTargetMemory()
         {
-            _targetDiary.UpdateTitle(titleInputField.text);
-            _targetDiary.UpdateMemoryDescription(descriptopnInputField.text);
-            _targetDiary.UpdateSummary(summaryInputField.text);
-            _targetDiary.SetLastUpdateTime(DateTime.Now);
+            MemoryManager.Instance.UpdateThisEditedMemoryIfExists(_targetDiary);
         }
 
         void OnOnInputFieldsChange(string arg0)

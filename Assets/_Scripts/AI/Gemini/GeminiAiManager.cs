@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Scripts
+namespace _Scripts.AI.Gemini
 {
     public enum GeminiModel
     {
@@ -18,8 +17,8 @@ namespace _Scripts
     public class GeminiAiManager : Singleton<GeminiAiManager>
     {
         [SerializeField] string apiKey;
-        private GeminiAIClient _aiClient;
-        public GeminiAIClient AIClient => _aiClient;
+        private GeminiAIClient _defaultAiClient;
+        public GeminiAIClient DefaultAiClient => _defaultAiClient;
 
         [SerializeField] GeminiModel selectedGeminiModel;
 
@@ -36,7 +35,17 @@ namespace _Scripts
 
         public override void Awake()
         {
-            _aiClient = new GeminiAIClient(apiKey, ModelMap[selectedGeminiModel]);
+            _defaultAiClient = new GeminiAIClient(apiKey, selectedGeminiModel);
+        }
+
+        public GeminiAIClient GetNewAIClient(GeminiModel model)
+        {
+            return new GeminiAIClient(apiKey, model);
+        }
+
+        public string GetThisModelName(GeminiModel target)
+        {
+            return ModelMap[target];
         }
     }
 }

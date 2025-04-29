@@ -1,37 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using _Scripts.UI;
 using RTLTMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using ContextMenu = _Scripts.UI.Context_Menu.ContextMenu;
 
-namespace _Scripts
+namespace _Scripts.Diary
 {
     public class MemoryDisplay : MonoBehaviour
     {
         private MemoryManager _manager => MemoryManager.Instance;
+        
         [SerializeField] Button targetOpeningButton;
         [SerializeField] Toggle targetSelectionToggle;
-
-        [SerializeField] private Image targetPinnedIcon;
-
-        //[SerializeField] private int charLimitationForDescription;
-        //[SerializeField] private int charLimitationForTitle;
         [SerializeField] RTLTextMeshPro descriptionPlace;
         [SerializeField] RTLTextMeshPro titlePlace;
         [SerializeField] RTLTextMeshPro lastModifiedTimePlace;
+        [SerializeField] ContextMenu contextMenu;
+        [SerializeField] private Image targetPinnedIcon;
+        //[SerializeField] private int charLimitationForDescription;
+        //[SerializeField] private int charLimitationForTitle;
+        
         public static List<MemoryDisplay> SelectedDisplayers = new List<MemoryDisplay>();
+        public bool IsSelected => isSelected;
 
-        [FormerlySerializedAs("memoryContextMenu")] [SerializeField]
-        ContextMenu contextMenu;
-
+        private bool isSelected;
         private DiaryContainer _diary;
+        
         static Action OnOtherContextMenuWillBeOpen;
         public static Action<List<MemoryDisplay>> OnSelectionsChanged;
-        public bool IsSelected => isSelected;
-        private bool isSelected;
 
         private void OnEnable()
         {
@@ -80,31 +80,8 @@ namespace _Scripts
                 var targetDescription = _diary.Summary == "" ? _diary.Description : _diary.Summary;
                 descriptionPlace.text = targetDescription;
                 lastModifiedTimePlace.text = _diary.LastUpdateTime.ToString(CultureInfo.InvariantCulture);
-
-                /*titlePlace.text = GetShortPreview(_memory.Title, charLimitationForTitle);
-                var targetDescription = _memory.Summary == "" ? _memory.Description : _memory.Summary;
-                descriptionPlace.text = GetShortPreview(targetDescription, charLimitationForDescription);
-                creationTimePlace.text = _memory.LastUpdateTime.ToString(CultureInfo.InvariantCulture);
-                lastModifiedTimePlace.text = _memory.LastUpdateTime.ToString(CultureInfo.InvariantCulture);*/
             }
         }
-
-        /*static string GetShortPreview(string text, int maxCharacters = 150)
-        {
-            if (string.IsNullOrWhiteSpace(text)) return "";
-
-            if (text.Length <= maxCharacters)
-                return text;
-
-            // برای اینکه کلمات نصفه نشکنن
-            string shortened = text.Substring(0, maxCharacters);
-            int lastSpace = shortened.LastIndexOf(' ');
-
-            if (lastSpace > 0)
-                shortened = shortened.Substring(0, lastSpace);
-
-            return shortened + " ...";
-        }*/
 
         public void OpenContextMenu()
         {

@@ -1,8 +1,7 @@
 using RTLTMPro;
-using TMPro;
 using UnityEngine;
 
-namespace _Scripts
+namespace _Scripts.Chat
 {
     public class ChatMessageDisplayer : MonoBehaviour
     {

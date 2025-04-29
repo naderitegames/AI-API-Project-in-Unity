@@ -1,10 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
-namespace _Scripts
+namespace _Scripts.UI.Windows
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class WindowPanel : MonoBehaviour

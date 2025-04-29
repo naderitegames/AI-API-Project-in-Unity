@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using _Scripts.Chat;
+using _Scripts.Diary;
+using _Scripts.UI.Windows;
 using UnityEngine;
+using ContextMenu = _Scripts.UI.Context_Menu.ContextMenu;
 
-namespace _Scripts
+namespace _Scripts.UI
 {
     [Serializable]
     public enum WindowType
     {
-        //Add = 0,
         Home = 0,
         Chat,
         Edit
@@ -22,9 +24,9 @@ namespace _Scripts
         [SerializeField] HomeWindow homeWindowPanel;
         [SerializeField] ChatWindow chatWindowPanel;
         [SerializeField] private WarningWindow _warningWindow;
+        [SerializeField] ContextMenu selectedDiariesContextMenu;
         Dictionary<WindowType, WindowPanel> _allPanels = new Dictionary<WindowType, WindowPanel>();
         WindowPanel _activePanel;
-        [SerializeField] ContextMenu selectedDiariesContextMenu;
 
         public static UiManager Instance { get; private set; }
 
@@ -124,6 +126,11 @@ namespace _Scripts
             }
 
             chatWithAiManager.PrepareForChat(targetDiaries);
+        }
+
+        public void CloseWarningWindow()
+        {
+            _warningWindow.SetActive(false);
         }
     }
 }

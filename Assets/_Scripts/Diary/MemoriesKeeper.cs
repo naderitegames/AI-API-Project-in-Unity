@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
 using Nader.ObjectPooling;
-using RTLTMPro;
 using UnityEngine;
 
-namespace _Scripts
+namespace _Scripts.Diary
 {
     public class MemoriesKeeper : MonoBehaviour
     {
@@ -35,8 +31,8 @@ namespace _Scripts
         public void RefreshDisplayers()
         {
             _memories = memoryManager.GetAllMemories();
-            if (_memories.Count >= 1)
-                RefreshDisplayers(_memories);
+            // if (_memories.Count >= 1)
+            RefreshDisplayers(_memories);
         }
 
         public void RefreshDisplayers(List<DiaryContainer> targetMemories)

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3009407940719956890}
   - component: {fileID: 3009407940719956889}
-  - component: {fileID: 3009407940719956884}
   m_Layer: 0
   m_Name: App Managers
   m_TagString: Untagged
@@ -47,19 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uiManager: {fileID: 0}
   _memoriesKeeper: {fileID: 0}
-  _aiManager: {fileID: 3009407940719956884}
   summaryLineCount: 3
---- !u!114 &3009407940719956884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3009407940719956888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd2d77e346794045abf1906e1c4e02e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  apiKey: AIzaSyBlmOjl-LFRk0VsIJkxvaSNEVZuxt0E1UA
-  selectedGeminiModel: 0

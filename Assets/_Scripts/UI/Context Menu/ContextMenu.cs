@@ -1,8 +1,8 @@
-using System;
+using _Scripts.UI.Windows;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Scripts
+namespace _Scripts.UI.Context_Menu
 {
     public class ContextMenu : MonoBehaviour
     {

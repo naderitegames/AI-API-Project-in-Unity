@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Unity.VisualScripting;
+using _Scripts.Diary;
 
-namespace _Scripts
+namespace _Scripts.Search_Box
 {
     public static class MemorySearch
     {

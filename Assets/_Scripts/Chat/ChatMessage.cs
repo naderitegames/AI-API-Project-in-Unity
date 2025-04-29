@@ -1,5 +1,6 @@
 using System;
-namespace _Scripts
+
+namespace _Scripts.Chat
 {
     [Serializable]
     public class ChatMessage

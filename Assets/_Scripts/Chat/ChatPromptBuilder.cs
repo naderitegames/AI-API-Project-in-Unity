@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Text;
+using _Scripts.Diary;
 
-namespace _Scripts
+namespace _Scripts.Chat
 {
     public static class ChatPromptBuilder
     {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using _Scripts.Diary;
 using UnityEngine;
 
 namespace _Scripts
@@ -14,7 +16,8 @@ namespace _Scripts
         public MemoryAppData()
         {
             _memories = new List<DiaryContainer>();
-            AddMemory(new DiaryContainer("امروز اولین روزی هست که از این برنامه استفاده میکنم.", "اولین استفاده"));
+            //ایجاد یک خاطره به طور پیشفرض هنگام اولین ورود
+            AddMemory(new DiaryContainer("امروز اولین روزی هست که از این برنامه استفاده میکنی. اگر خوشت اومد یادت نره به برنامه امتیاز بدی.", "اولین استفاده"));
         }
 
         public void AddMemory(DiaryContainer diary)
@@ -46,18 +49,22 @@ namespace _Scripts
             {
                 if (_memories[i].ID == targetDiary.ID)
                 {
-                    _memories[i].UpdateMemoryDescription(targetDiary.Description);
+                    Deboger.Instance.Log("در حال آپدیت مقادیر خاطره");
+                    _memories[i].UpdateDiaryDescription(targetDiary.Description);
                     _memories[i].UpdateSummary(targetDiary.Summary);
-                    _memories[i].UpdateTitle(targetDiary.Title == ""
+                    _memories[i].UpdateTitle(string.IsNullOrEmpty(targetDiary.Title) 
                         ? "خاطره شماره " + _memories.Count
                         : targetDiary.Title);
                     _memories[i].SetLastUpdateTime(DateTime.Now);
+                    if (targetDiary.HasEmbedding())
+                        _memories[i].SetEmbedding(targetDiary.Embedding);
                     return;
                 }
             }
 
             AddMemory(targetDiary);
-            Debug.Log("diary did not find but added");
+            Deboger.Instance.Log("diary did not find but added");
         }
+
     }
 }

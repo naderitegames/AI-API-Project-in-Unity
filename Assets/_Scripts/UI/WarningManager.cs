@@ -1,7 +1,7 @@
-using System;
+using _Scripts.UI.Windows;
 using UnityEngine;
 
-namespace _Scripts
+namespace _Scripts.UI
 {
     public class WarningManager : MonoBehaviour
     {

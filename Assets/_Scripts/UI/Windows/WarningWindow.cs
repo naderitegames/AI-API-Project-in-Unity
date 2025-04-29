@@ -1,10 +1,9 @@
 using System;
 using RTLTMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace _Scripts
+namespace _Scripts.UI.Windows
 {
     public class WarningWindow : WindowPanel
     {

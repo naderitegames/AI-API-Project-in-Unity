@@ -1,10 +1,9 @@
-using System;
 using TMPro;
 using UnityEngine;
 
-namespace _Scripts
+namespace _Scripts.UI
 {
-    public class TextForeProperties : MonoBehaviour
+    public class TextForceProperties : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI targetText;
         [SerializeField] bool wrappingEnabled;

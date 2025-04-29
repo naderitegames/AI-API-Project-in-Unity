@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Scripts
+namespace _Scripts.Chat
 {
     public class UserChatInputField : MonoBehaviour
     {

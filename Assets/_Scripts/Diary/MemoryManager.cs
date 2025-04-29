@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using RTLTMPro;
-using TMPro;
+using _Scripts.AI.Gemini;
+using _Scripts.Search_Box;
+using _Scripts.UI;
 using UnityEngine;
 
-namespace _Scripts
+namespace _Scripts.Diary
 {
     public class MemoryManager : Singleton<MemoryManager>
     {
         [SerializeField] UiManager _uiManager;
         [SerializeField] MemoriesKeeper _memoriesKeeper;
-        private GeminiAiManager AiManager=>GeminiAiManager.Instance;
+        private GeminiAiManager AiManager => GeminiAiManager.Instance;
         [SerializeField] private int summaryLineCount;
         MemoryAppData _data = new MemoryAppData();
         private string _memoryDataPath;
@@ -53,6 +54,7 @@ namespace _Scripts
                 throw;
             }
         }
+
         void AddToMemoriesAndSave(DiaryContainer diary)
         {
             try
@@ -96,7 +98,7 @@ namespace _Scripts
                 SaveLoadSystem.Load<MemoryAppData>(_memoryDataPath,
                     (d) => { _data = d; },
                     () => { },
-                    SaveMemoriesAndRefresh,// it will save an empty file (with one sample diary)
+                    SaveMemoriesAndRefresh, // it will save an empty file (with one sample diary)
                     (e) => throw e);
             }
             catch (Exception e)
@@ -106,20 +108,20 @@ namespace _Scripts
             }
         }
 
-        public void SearchInMemories(TMP_InputField inputField)
+        public void SearchInMemories(string targetText)
         {
-            var results = MemorySearch.SearchMemoriesByKeyword(inputField.text, _data.Memories);
-            if (inputField.text != "")
-                _memoriesKeeper.RefreshDisplayers(results);
-            if (inputField.text == "")
+            var results = MemorySearch.SearchMemoriesByKeyword(targetText, _data.Memories);
+            if (targetText != "")
+                DisplaySearchResults(results);
+            if (targetText == "")
                 _memoriesKeeper.RefreshDisplayers();
         }
 
-        public void SummarizeThisMemoryThenSave(DiaryContainer diary ,Action<DiaryContainer> onComplete = null)
+        public void SummarizeThisMemoryThenSave(DiaryContainer diary, Action<DiaryContainer> onComplete = null)
         {
             if (!MemorySummarizer.CanSummarize(diary, _uiManager)) return;
 
-            MemorySummarizer.TrySummarizeWithConfirmation(diary, AiManager, _uiManager, summaryLineCount, (summary) =>
+            MemorySummarizer.TrySummarizeWithConfirmation(diary, _uiManager, summaryLineCount, (summary) =>
             {
                 // ساخت کپی برای جایگزینی
                 DiaryContainer updated = new DiaryContainer(diary.Description, diary.Title);
@@ -150,6 +152,11 @@ namespace _Scripts
         {
             _data.UpdateMemoryByIdOrMakeNewOne(targetDiary);
             SaveMemoriesAndRefresh();
+        }
+
+        public void DisplaySearchResults(List<DiaryContainer> searchResults)
+        {
+            _memoriesKeeper.RefreshDisplayers(searchResults);
         }
     }
 }

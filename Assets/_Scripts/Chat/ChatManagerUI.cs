@@ -1,8 +1,9 @@
-using UnityEngine;
+using System.Collections.Generic;
 using Nader.ObjectPooling;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Scripts
+namespace _Scripts.Chat
 {
     public class ChatManagerUI : MonoBehaviour
     {
@@ -16,17 +17,13 @@ namespace _Scripts
 
         private void Awake()
         {
-            _userMessagePool = new ObjectPool<ChatMessageDisplayer>(userMessagePrefab, 5, chatContentParent, false);
-            _aiMessagePool = new ObjectPool<ChatMessageDisplayer>(aiMessagePrefab, 5, chatContentParent, false);
+            _userMessagePool = new ObjectPool<ChatMessageDisplayer>(userMessagePrefab, 0, chatContentParent, false);
+            _aiMessagePool = new ObjectPool<ChatMessageDisplayer>(aiMessagePrefab, 0, chatContentParent, false);
         }
 
         public void AddThisMessageToChat(ChatMessage chatMessage)
         {
-            ChatMessageDisplayer messageDisplayer = chatMessage.Sender == SenderType.User
-                ? _userMessagePool.GetObject()
-                : _aiMessagePool.GetObject();
-            messageDisplayer.transform.SetAsLastSibling();
-            messageDisplayer.SetUpMessage(chatMessage);
+            CreateOneChatSlot(chatMessage);
 
             // بلافاصله اسکرول کنه پایین
             Canvas.ForceUpdateCanvases();
@@ -37,6 +34,14 @@ namespace _Scripts
         {
             _userMessagePool.DeActiveAll();
             _aiMessagePool.DeActiveAll();
+        }
+        
+        void CreateOneChatSlot(ChatMessage chatMessage)
+        {
+            var messageDisplayer= chatMessage.Sender == SenderType.User ? _userMessagePool.GetObject() : _aiMessagePool.GetObject();
+            messageDisplayer.transform.localScale = Vector3.one;
+            messageDisplayer.transform.SetAsLastSibling();
+            messageDisplayer.SetUpMessage(chatMessage);
         }
     }
 }
