@@ -10,26 +10,22 @@ namespace _Scripts.Embedding
     {
         public List<DiaryContainer> FindBestMatches(List<DiaryContainer> diaries, float[] searchEmbedding, int topN)
         {
-            var similarities = new List<(DiaryContainer diary, float score)>();
-
-            foreach (var diary in diaries)
-            {
-                if (!diary.HasEmbedding()) continue;
-
-                float similarity = EmbeddingCalculator.CosineSimilarity(diary.Embedding, searchEmbedding);
-                similarities.Add((diary, similarity));
-
-                Debug.Log($"📘 Diary: {diary.Title} | Similarity: {similarity:F4}");
-            }
-
-            var topMatches = similarities
-                .OrderByDescending(x => x.score)
-                .Take(topN)
+            var scoredDiaries = diaries
+                .Where(d => d.HasEmbedding())
+                .Select(d =>
+                {
+                    var score = EmbeddingCalculator.CosineSimilarity(d.Embedding, searchEmbedding);
+                    Debug.Log($"Diary: {d.Title} | Similarity: {score}");
+                    return (diary: d, score);
+                })
+                .OrderByDescending(x => x.score) // مرتب‌سازی از بیشترین به کمترین
+                .Take(topN) // گرفتن topN خاطره
                 .Select(x => x.diary)
                 .ToList();
 
-            return topMatches;
+            Debug.Log(scoredDiaries.Count + " found");
+            return scoredDiaries;
         }
-    }
 
+    }
 }

@@ -107,7 +107,7 @@ namespace _Scripts.Diary
 
         public bool HasEmbedding()
         {
-            return _embedding != null && _embedding.Length > 0;
+            return _embedding is { Length: > 767 };
         }
     }
 }

@@ -156,6 +156,7 @@ namespace _Scripts.Diary
 
         public void DisplaySearchResults(List<DiaryContainer> searchResults)
         {
+            print($"We will search in {searchResults.Count}");
             _memoriesKeeper.RefreshDisplayers(searchResults);
         }
     }

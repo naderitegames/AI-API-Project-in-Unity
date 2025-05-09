@@ -6,7 +6,7 @@ namespace _Scripts.UI.Context_Menu
 {
     public class ContextMenu : MonoBehaviour
     {
-        static WindowPanel _activeContextMenu;
+        public static WindowPanel ActiveContextMenu;
         [SerializeField] private WindowPanel targetWindowPanel;
         [SerializeField] private Button targetOpeningButton;
         [SerializeField] private Button targetClosingButton;
@@ -36,8 +36,8 @@ namespace _Scripts.UI.Context_Menu
         public void SetActive(bool isActive)
         {
             targetWindowPanel.SetActive(isActive);
-            _activeContextMenu?.SetActive(isActive);
-            _activeContextMenu = isActive ? targetWindowPanel : null;
+            ActiveContextMenu?.SetActive(isActive);
+            ActiveContextMenu = isActive ? targetWindowPanel : null;
         }
     }
 }

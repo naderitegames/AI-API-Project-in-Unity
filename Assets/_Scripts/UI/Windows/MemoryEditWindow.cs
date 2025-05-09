@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using _Scripts.Chat;
 using _Scripts.Diary;
 using TMPro;
 using UnityEngine;
@@ -8,11 +11,13 @@ namespace _Scripts.UI.Windows
     public class MemoryEditWindow : WindowPanel
     {
         DiaryContainer _targetDiary;
+        [SerializeField] ChatWithAiManager _aiManager;
         [SerializeField] TMP_InputField descriptopnInputField;
         [SerializeField] TMP_InputField summaryInputField;
         [SerializeField] TMP_InputField titleInputField;
         [SerializeField] Button targetSaveButton;
         [SerializeField] Button targetClearButon;
+        [SerializeField] Button targetChatButton;
         [SerializeField] Button targetCancelButton;
         [SerializeField] Button targetSummarizelButton;
         [SerializeField] Button turnOnOriginalDiscriptionButton;
@@ -24,11 +29,12 @@ namespace _Scripts.UI.Windows
             targetCancelButton.onClick.AddListener(CancelButtonClick);
             targetSaveButton.onClick.AddListener(SaveEditedMemory);
             targetClearButon.onClick.AddListener(ClearDescriptionTotally);
+            targetChatButton.onClick.AddListener(StartChatWithAI);
             descriptopnInputField.onValueChanged.AddListener(OnOnInputFieldsChange);
             summaryInputField.onValueChanged.AddListener(OnOnInputFieldsChange);
             titleInputField.onValueChanged.AddListener(OnOnInputFieldsChange);
             turnOnOriginalDiscriptionButton.onClick.AddListener(OnDisplayOriginalDescription);
-            targetSummarizelButton.onClick.AddListener(SummurizeDescriptionNow);
+            targetSummarizelButton.onClick.AddListener(SummarizeDescriptionNow);
             turnOnDiscriptionSummaryButton.onClick.AddListener(OnDisplaylDescriptionSummary);
 
             SwitchOriginalDescriptionStateTo(true);
@@ -39,15 +45,23 @@ namespace _Scripts.UI.Windows
             targetCancelButton.onClick.RemoveListener(CancelButtonClick);
             targetSaveButton.onClick.RemoveListener(SaveEditedMemory);
             targetClearButon.onClick.RemoveListener(ClearDescriptionTotally);
+            targetChatButton.onClick.RemoveListener(StartChatWithAI);
             turnOnOriginalDiscriptionButton.onClick.RemoveListener(OnDisplayOriginalDescription);
             turnOnDiscriptionSummaryButton.onClick.RemoveListener(OnDisplaylDescriptionSummary);
             descriptopnInputField.onValueChanged.RemoveListener(OnOnInputFieldsChange);
             summaryInputField.onValueChanged.RemoveListener(OnOnInputFieldsChange);
-            targetSummarizelButton.onClick.RemoveListener(SummurizeDescriptionNow);
+            targetSummarizelButton.onClick.RemoveListener(SummarizeDescriptionNow);
             titleInputField.onValueChanged.RemoveListener(OnOnInputFieldsChange);
         }
 
-        private void SummurizeDescriptionNow()
+        private void StartChatWithAI()
+        {
+            List<DiaryContainer> targets = new List<DiaryContainer> { _targetDiary };
+            _aiManager.PrepareForChat(targets);
+            UiManager.Instance.ActivatePanel(WindowType.Chat);
+        }
+
+        private void SummarizeDescriptionNow()
         {
             _targetDiary.UpdateDiaryDescription(descriptopnInputField.text);
             MemoryManager.Instance.SummarizeThisMemoryThenSave(_targetDiary, (t) =>
@@ -126,7 +140,10 @@ namespace _Scripts.UI.Windows
 
         void ApplyUserChangesToTargetMemory()
         {
-            MemoryManager.Instance.UpdateThisEditedMemoryIfExists(_targetDiary);
+            _targetDiary.UpdateTitle(titleInputField.text);
+            _targetDiary.UpdateDiaryDescription(descriptopnInputField.text);
+            _targetDiary.UpdateSummary(summaryInputField.text);
+            _targetDiary.SetLastUpdateTime(DateTime.Now);
         }
 
         void OnOnInputFieldsChange(string arg0)

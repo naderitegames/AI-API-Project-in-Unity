@@ -53,6 +53,9 @@ namespace _Scripts.Diary
             targetOpeningButton.onClick.RemoveListener(TryOpeningThisMemory);
             OnSelectionsChanged -= OnOnSelectionsChanged;
             targetSelectionToggle.onValueChanged.RemoveListener(ChangeSelectionStateTo);
+            ChangeSelectionStateTo(false);
+            contextMenu.SetActive(false);
+            SelectedDisplayers.Clear();
         }
 
         private void OnOnOtherContextMenuWillBeOpen()

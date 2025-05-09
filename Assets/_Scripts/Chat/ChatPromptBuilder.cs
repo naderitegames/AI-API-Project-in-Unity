@@ -21,9 +21,10 @@ namespace _Scripts.Chat
             // بعد پیام‌های چت قبلی
             foreach (var message in messages)
             {
-                string rolePrefix = message.Sender == SenderType.User ? "User" : "Assistant";
+                string rolePrefix = message.Sender == SenderType.User ? "کاربرپ" : "هوش مصنوعی";
                 promptBuilder.AppendLine($"{rolePrefix}: {message.Message}");
             }
+            promptBuilder.AppendLine($"\n\n جواب رو طوری بده که معلوم نباشه ai نوشته. قبل از پیامت از کلماتی مصل ai استفاده نکن.");
 
             // آماده‌ی ارسال
             return promptBuilder.ToString();

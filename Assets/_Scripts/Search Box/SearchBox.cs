@@ -1,3 +1,4 @@
+using System.Linq;
 using _Scripts.AI.Embedding;
 using _Scripts.Diary;
 using _Scripts.UI;
@@ -54,7 +55,8 @@ namespace _Scripts.Search_Box
                         // دریافت و ذخیره embedding برای این diary
                         await EmbeddingManager.Instance.SaveEmbeddingForDiaryAsync(diary);
                     }
-                    print(diary.Embedding);
+                    Debug.Log($"Embedding dimensions: {diary.Embedding.Length}");
+                    print(string.Join(", ", diary.Embedding.Take(5)));
                 }
 
                 UiManager.Instance.DisplayThisWarning("در حال ارسال اطلاعات. کمی صبر کنید");

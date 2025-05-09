@@ -35,7 +35,7 @@ namespace _Scripts.AI.Embedding
         }
 
         public async Task<List<DiaryContainer>> SearchSimilarDiariesAsync(string query, List<DiaryContainer> allDiaries,
-            int topN = 3)
+            int topN = 2)
         {
             if (string.IsNullOrWhiteSpace(query))
                 return new List<DiaryContainer>();
@@ -49,7 +49,9 @@ namespace _Scripts.AI.Embedding
             }
 
             EmbeddingSearcher searcher = new EmbeddingSearcher();
-            return searcher.FindBestMatches(allDiaries, queryEmbedding, topN);
+            var results = searcher.FindBestMatches(allDiaries, queryEmbedding, topN);
+            print(results.Count+" this will be send");
+            return results;
         }
 
         public async Task SaveEmbeddingForDiaryAsync(DiaryContainer diary)
@@ -64,6 +66,7 @@ namespace _Scripts.AI.Embedding
             if (embedding != null)
             {
                 diary.SetEmbedding(embedding);
+                print($"Embedding Length: {embedding.Length}"); // باید مثلاً 768 یا 1024 باشه
                 MemoryManager.Instance.UpdateThisEditedMemoryIfExists(diary);
                 _deboger.Log($"New embedding saved for : {diary.Title}");
             }
