@@ -666,6 +666,34 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: f24ffe951cc9dc740886f725bd5f12bb, type: 3}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2057142949}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RemoveAllSelectedMemories
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Scripts.Diary.MemoryManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6096215184277434108, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
       propertyPath: m_Name
       value: Delete All
@@ -1409,6 +1437,34 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: a40a3560ea6b3394ca8c94f5bcebb3ef, type: 3}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2057142949}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SummarizeAllSelectedMemories
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Scripts.Diary.MemoryManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705218911887760114, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6096215184277434108, guid: dccd83677e456e545b04d351ad6bfc2f, type: 3}
       propertyPath: m_Name
       value: Summarize All
@@ -5306,7 +5362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6856666600161728413, guid: 33e7834b88b83234e9187a1dfe8733d3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1730.1589
+      value: 1730.1599
       objectReference: {fileID: 0}
     - target: {fileID: 7054032495788461678, guid: 33e7834b88b83234e9187a1dfe8733d3, type: 3}
       propertyPath: m_Name
@@ -6560,7 +6616,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3009407940719956888, guid: edd29866df1a83547a4a819d3dd172ca, type: 3}
       propertyPath: m_Name
-      value: App Managers
+      value: Memory Managers
       objectReference: {fileID: 0}
     - target: {fileID: 3009407940719956889, guid: edd29866df1a83547a4a819d3dd172ca, type: 3}
       propertyPath: _aiManager

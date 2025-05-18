@@ -17,7 +17,9 @@ namespace _Scripts
         {
             _memories = new List<DiaryContainer>();
             //ایجاد یک خاطره به طور پیشفرض هنگام اولین ورود
-            AddMemory(new DiaryContainer("امروز اولین روزی هست که از این برنامه استفاده میکنی. اگر خوشت اومد یادت نره به برنامه امتیاز بدی.", "اولین استفاده"));
+            AddMemory(new DiaryContainer(
+                "امروز اولین روزی هست که از این برنامه استفاده میکنی. اگر خوشت اومد یادت نره به برنامه امتیاز بدی.",
+                "اولین استفاده"));
         }
 
         public void AddMemory(DiaryContainer diary)
@@ -52,7 +54,7 @@ namespace _Scripts
                     Deboger.Instance.Log("در حال آپدیت مقادیر خاطره");
                     _memories[i].UpdateDiaryDescription(targetDiary.Description);
                     _memories[i].UpdateSummary(targetDiary.Summary);
-                    _memories[i].UpdateTitle(string.IsNullOrEmpty(targetDiary.Title) 
+                    _memories[i].UpdateTitle(string.IsNullOrEmpty(targetDiary.Title)
                         ? "خاطره شماره " + _memories.Count
                         : targetDiary.Title);
                     _memories[i].SetLastUpdateTime(DateTime.Now);
@@ -62,9 +64,10 @@ namespace _Scripts
                 }
             }
 
+            if (string.IsNullOrEmpty(targetDiary.Title))
+                targetDiary.UpdateTitle("خاطره شماره " + _memories.Count);
             AddMemory(targetDiary);
             Deboger.Instance.Log("diary did not find but added");
         }
-
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using _Scripts.AI.Embedding;
 using _Scripts.Diary;
@@ -46,26 +47,36 @@ namespace _Scripts.Search_Box
             if (aiModeSearch.isOn)
             {
                 UiManager.Instance.DisplayThisWarning("در حال برسی اطلاعات. کمی صبر کنید");
-                // بررسی اینکه آیا هر Diary دارای embedding است یا نه
-                foreach (var diary in allMemories)
-                {
-                    //اگر حاوی embedding نبود
-                    if (!diary.HasEmbedding())
+                /*try
+                {*/
+                    // بررسی اینکه آیا هر Diary دارای embedding است یا نه
+                    foreach (var diary in allMemories)
                     {
-                        // دریافت و ذخیره embedding برای این diary
-                        await EmbeddingManager.Instance.SaveEmbeddingForDiaryAsync(diary);
+                        //اگر حاوی embedding نبود
+                        if (!diary.HasEmbedding())
+                        {
+                            // دریافت و ذخیره embedding برای این diary
+                            await EmbeddingManager.Instance.SaveEmbeddingForDiaryAsync(diary);
+                        }
+
+                        //Debug.Log("Embedding dimensions: " + diary.Embedding.Length);
+                        //print(string.Join(", ", diary.Embedding.Take(5)));
                     }
-                    Debug.Log($"Embedding dimensions: {diary.Embedding.Length}");
-                    print(string.Join(", ", diary.Embedding.Take(5)));
-                }
 
-                UiManager.Instance.DisplayThisWarning("در حال ارسال اطلاعات. کمی صبر کنید");
+                    UiManager.Instance.DisplayThisWarning("در حال ارسال اطلاعات. کمی صبر کنید");
 
-                // حالا جستجو با AI رو انجام میدیم
-                var results =
-                    await EmbeddingManager.Instance.SearchSimilarDiariesAsync(searchInputField.text, allMemories);
-                UiManager.Instance.CloseWarningWindow();
-                memoryManager.DisplaySearchResults(results);
+                    // حالا جستجو با AI رو انجام میدیم
+                    var results =
+                        await EmbeddingManager.Instance.SearchSimilarDiariesAsync(searchInputField.text, allMemories);
+                    UiManager.Instance.CloseWarningWindow();
+                    memoryManager.DisplaySearchResults(results);
+                /*}
+                catch (Exception e)
+                {
+                    UiManager.Instance.DisplayThisWarning("مشکلی رخ داد. کنسول را چک کنید.", "بسیار خب");
+                    print("Error : " + e);
+                    throw;
+                }*/
             }
             else
             {

@@ -5,6 +5,7 @@ using System.Linq;
 using _Scripts.AI.Gemini;
 using _Scripts.Search_Box;
 using _Scripts.UI;
+using RTLTMPro;
 using UnityEngine;
 
 namespace _Scripts.Diary
@@ -29,7 +30,7 @@ namespace _Scripts.Diary
             return _data.Memories;
         }
 
-        public void CreateMemoryFromInput(MemoryInput memoryInput)
+        /*public void CreateMemoryFromInput(MemoryInput memoryInput)
         {
             try
             {
@@ -59,6 +60,7 @@ namespace _Scripts.Diary
         {
             try
             {
+                print(diary.Description);
                 _data.AddMemory(diary);
                 SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
             }
@@ -67,7 +69,7 @@ namespace _Scripts.Diary
                 Console.WriteLine(e);
                 throw;
             }
-        }
+        }*/
 
         public void RemoveFromMemories(DiaryContainer diary)
         {
@@ -82,6 +84,19 @@ namespace _Scripts.Diary
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        public void RemoveAllSelectedMemories()
+        {
+            UiManager.Instance.DisplayThisWarning("از حذف همه اطمینان دارید؟", () =>
+            {
+                foreach (var diary in MemoryDisplay.SelectedDisplayers)
+                {
+                    _data.Remove(diary.GetDiary());
+                }
+                SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
+                _memoriesKeeper.RefreshDisplayers();
+            }, "خیر", "بله");
         }
 
         public void ToggleThisMemoryPinState(DiaryContainer diary)
@@ -119,18 +134,39 @@ namespace _Scripts.Diary
 
         public void SummarizeThisMemoryThenSave(DiaryContainer diary, Action<DiaryContainer> onComplete = null)
         {
-            if (!MemorySummarizer.CanSummarize(diary, _uiManager)) return;
-
-            MemorySummarizer.TrySummarizeWithConfirmation(diary, _uiManager, summaryLineCount, (summary) =>
+            try
             {
-                // ساخت کپی برای جایگزینی
-                DiaryContainer updated = new DiaryContainer(diary.Description, diary.Title);
-                updated.UpdateId(diary.ID);
-                updated.UpdateSummary(summary);
-                _data.UpdateMemoryByIdOrMakeNewOne(updated);
-                SaveMemoriesAndRefresh();
-                onComplete?.Invoke(updated);
-            });
+                UiManager.Instance.DisplayThisWarning("کمی صبر کنید . . .", () =>
+                {
+                    if (!MemorySummarizer.CanSummarize(diary, _uiManager)) return;
+
+                    MemorySummarizer.TrySummarizeWithConfirmation(diary, _uiManager, summaryLineCount, (summary) =>
+                    {
+                        // ساخت کپی برای جایگزینی
+                        DiaryContainer updated = new DiaryContainer(diary.Description, diary.Title);
+                        updated.UpdateId(diary.ID);
+                        updated.UpdateSummary(summary);
+                        _data.UpdateMemoryByIdOrMakeNewOne(updated);
+                        SaveMemoriesAndRefresh();
+                        onComplete?.Invoke(updated);
+                    });
+                    UiManager.Instance.CloseWarningWindow();
+                });
+            }
+            catch (Exception e)
+            {
+                UiManager.Instance.DisplayThisWarning("مشکلی در خلاصه سازی رخ داد. کنسول را چک کنید", "بسیار خب");
+                print("Error : " + e);
+                throw;
+            }
+        }
+
+        public void SummarizeAllSelectedMemories()
+        {
+            foreach (var target in MemoryDisplay.SelectedDisplayers)
+            {
+                SummarizeThisMemoryThenSave(target.GetDiary());
+            }
         }
 
         private void SaveMemoriesAndRefresh()

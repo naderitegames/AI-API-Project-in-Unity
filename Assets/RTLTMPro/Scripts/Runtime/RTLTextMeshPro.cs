@@ -120,7 +120,7 @@ namespace RTLTMPro
             havePropertiesChanged = true;
         }
 
-        private string GetFixedText(string input)
+        public string GetFixedText(string input)
         {
             if (string.IsNullOrEmpty(input))
                 return input;

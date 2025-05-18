@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Chat;
 using _Scripts.Diary;
@@ -123,6 +124,7 @@ namespace _Scripts.UI.Windows
 
         void SaveEditedMemory()
         {
+            
             string messageText = string.IsNullOrEmpty(descriptopnInputField.text)
                 ? "متن خاطره خالی است. آیا از ذخیره اطمینان دارید؟!"
                 : "آیا از ثبت تغییرات اطمینان دارید؟!";
