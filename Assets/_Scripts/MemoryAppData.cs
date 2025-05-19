@@ -18,7 +18,8 @@ namespace _Scripts
             _memories = new List<DiaryContainer>();
             //ایجاد یک خاطره به طور پیشفرض هنگام اولین ورود
             AddMemory(new DiaryContainer(
-                "امروز اولین روزی هست که از این برنامه استفاده میکنی. اگر خوشت اومد یادت نره به برنامه امتیاز بدی.",
+                "سلام. امروز اولین روزی هست که از این برنامه استفاده میکنی. اگر خوشت اومد یادت نره به برنامه امتیاز بدی." +
+                "همینطور میتونی با دادن نظرات مفید به بهبود برنامه کمک کنی.",
                 "اولین استفاده"));
         }
 
@@ -42,7 +43,7 @@ namespace _Scripts
 
         void SortAscendingByCreationDate()
         {
-            _memories = _memories.OrderBy(x => x.TargetDate).ToList();
+            _memories = _memories.OrderBy(x => x.CreationDate).ToList();
         }
 
         public void UpdateMemoryByIdOrMakeNewOne(DiaryContainer targetDiary)

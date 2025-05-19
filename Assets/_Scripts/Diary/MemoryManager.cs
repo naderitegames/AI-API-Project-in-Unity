@@ -124,12 +124,11 @@ namespace _Scripts.Diary
             }
         }
 
-        public void SearchInMemories(string targetText)
+        public void DisplayThisMemories(List<DiaryContainer> targets)
         {
-            var results = MemorySearch.SearchMemoriesByKeyword(targetText, _data.Memories);
-            if (targetText != "")
-                DisplaySearchResults(results);
-            if (targetText == "")
+            if (targets is { Count: > 0 })
+                _memoriesKeeper.RefreshDisplayers(targets);
+            if (targets == null || targets.Count == 0)
                 _memoriesKeeper.RefreshDisplayers();
         }
 
@@ -137,22 +136,8 @@ namespace _Scripts.Diary
         {
             try
             {
-                UiManager.Instance.DisplayThisWarning("کمی صبر کنید . . .", () =>
-                {
-                    if (!MemorySummarizer.CanSummarize(diary, _uiManager)) return;
-
-                    MemorySummarizer.TrySummarizeWithConfirmation(diary, _uiManager, summaryLineCount, (summary) =>
-                    {
-                        // ساخت کپی برای جایگزینی
-                        DiaryContainer updated = new DiaryContainer(diary.Description, diary.Title);
-                        updated.UpdateId(diary.ID);
-                        updated.UpdateSummary(summary);
-                        _data.UpdateMemoryByIdOrMakeNewOne(updated);
-                        SaveMemoriesAndRefresh();
-                        onComplete?.Invoke(updated);
-                    });
-                    UiManager.Instance.CloseWarningWindow();
-                });
+                UiManager.Instance.DisplayThisWarning("از خلاصه کردن اطمینان دارید؟",
+                    () => { TryGetSummarizeForThisDiary(diary); }, "خیر", "بله");
             }
             catch (Exception e)
             {
@@ -164,34 +149,37 @@ namespace _Scripts.Diary
 
         public void SummarizeAllSelectedMemories()
         {
-            foreach (var target in MemoryDisplay.SelectedDisplayers)
+            try
             {
-                try
+                UiManager.Instance.DisplayThisWarning("از خلاصه سازی جمعی اطمینان دارید؟", () =>
                 {
-                    var diary = target.GetDiary();
-                    UiManager.Instance.DisplayThisWarning("از خلاصه سازی جمعی اطمینان دارید؟", () =>
+                    foreach (var target in MemoryDisplay.SelectedDisplayers)
                     {
-                        if (!MemorySummarizer.CanSummarize(diary, _uiManager)) return;
-
-                        MemorySummarizer.TrySummarizeWithConfirmation(diary, _uiManager, summaryLineCount, (summary) =>
-                        {
-                            // ساخت کپی برای جایگزینی
-                            DiaryContainer updated = new DiaryContainer(diary.Description, diary.Title);
-                            updated.UpdateId(diary.ID);
-                            updated.UpdateSummary(summary);
-                            _data.UpdateMemoryByIdOrMakeNewOne(updated);
-                            SaveMemoriesAndRefresh();
-                        });
-                        UiManager.Instance.CloseWarningWindow();
-                    },"خیر","بله");
-                }
-                catch (Exception e)
-                {
-                    UiManager.Instance.DisplayThisWarning("مشکلی در خلاصه سازی رخ داد. کنسول را چک کنید", "بسیار خب");
-                    print("Error : " + e);
-                    throw;
-                }
+                        TryGetSummarizeForThisDiary(target.GetDiary());
+                    }
+                });
             }
+            catch (Exception e)
+            {
+                UiManager.Instance.DisplayThisWarning("مشکلی در خلاصه سازی رخ داد. کنسول را چک کنید", "بسیار خب");
+                print("Error : " + e);
+                throw;
+            }
+        }
+
+        void TryGetSummarizeForThisDiary(DiaryContainer diary, Action<DiaryContainer> OnSuccess = null)
+        {
+            if (!DiarySummarizer.CanSummarize(diary, _uiManager)) return;
+            DiarySummarizer.TrySummarize(diary.Description, summaryLineCount, (summary) =>
+            {
+                // ساخت کپی برای جایگزینی
+                DiaryContainer target = new DiaryContainer(diary.Description, diary.Title);
+                target.UpdateId(diary.ID);
+                target.UpdateSummary(summary);
+                OnSuccess?.Invoke(target);
+                _data.UpdateMemoryByIdOrMakeNewOne(target);
+                SaveMemoriesAndRefresh();
+            });
         }
 
         private void SaveMemoriesAndRefresh()
@@ -213,12 +201,6 @@ namespace _Scripts.Diary
         {
             _data.UpdateMemoryByIdOrMakeNewOne(targetDiary);
             SaveMemoriesAndRefresh();
-        }
-
-        public void DisplaySearchResults(List<DiaryContainer> searchResults)
-        {
-            print($"We will search in {searchResults.Count}");
-            _memoriesKeeper.RefreshDisplayers(searchResults);
         }
     }
 }

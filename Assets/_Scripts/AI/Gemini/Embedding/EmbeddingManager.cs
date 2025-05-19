@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using _Scripts.AI.Gemini;
 using _Scripts.Diary;
 using _Scripts.Embedding;
-using UnityEngine;
 
-namespace _Scripts.AI.Embedding
+namespace _Scripts.AI.Gemini.Embedding
 {
     public class EmbeddingManager : Singleton<EmbeddingManager>
     {

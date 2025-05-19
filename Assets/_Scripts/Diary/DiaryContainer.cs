@@ -7,16 +7,14 @@ namespace _Scripts.Diary
     {
         public string ID => _id;
         private string _id;
-        public DateTime MemoryTime => _memoryTime;
-        private DateTime _memoryTime;
         public string Title => _title;
         private string _title = "";
         public string Summary => _summary;
         private string _summary = "";
         public string Description => _description;
         private string _description;
-        public DateTime TargetDate => _targetDate;
-        private DateTime _targetDate;
+        public DateTime CreationDate => _creationDate;
+        private DateTime _creationDate;
         public DateTime LastUpdateTime => _lastUpdateTime;
         private DateTime _lastUpdateTime;
         public int TotalCharactersInMemory => _totalCharactersInMemory;
@@ -42,8 +40,8 @@ namespace _Scripts.Diary
             _id = Guid.NewGuid().ToString();
             _title = title;
             _description = description;
-            _memoryTime = DateTime.Now;
-            _lastUpdateTime = _targetDate = DateTime.Now;
+            _creationDate = DateTime.Now;
+            _lastUpdateTime =DateTime.Now;
             UpdateMemoryProperties();
         }
 

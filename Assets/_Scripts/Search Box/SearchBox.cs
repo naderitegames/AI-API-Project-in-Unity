@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _Scripts.AI.Embedding;
 using _Scripts.Diary;
 using _Scripts.UI;
@@ -9,6 +11,12 @@ using UnityEngine.UI;
 
 namespace _Scripts.Search_Box
 {
+    public enum SearchType
+    {
+        KeyWords,
+        AIMode
+    }
+
     public class SearchBox : MonoBehaviour
     {
         [SerializeField] Button searchButton;
@@ -42,51 +50,36 @@ namespace _Scripts.Search_Box
             if (string.IsNullOrWhiteSpace(searchInputField.text))
                 return;
 
-            var allMemories = memoryManager.GetAllMemories();
 
             if (aiModeSearch.isOn)
             {
-                UiManager.Instance.DisplayThisWarning("در حال برسی اطلاعات. کمی صبر کنید");
-                /*try
-                {*/
-                    // بررسی اینکه آیا هر Diary دارای embedding است یا نه
-                    foreach (var diary in allMemories)
-                    {
-                        //اگر حاوی embedding نبود
-                        if (!diary.HasEmbedding())
-                        {
-                            // دریافت و ذخیره embedding برای این diary
-                            await EmbeddingManager.Instance.SaveEmbeddingForDiaryAsync(diary);
-                        }
-
-                        //Debug.Log("Embedding dimensions: " + diary.Embedding.Length);
-                        //print(string.Join(", ", diary.Embedding.Take(5)));
-                    }
-
-                    UiManager.Instance.DisplayThisWarning("در حال ارسال اطلاعات. کمی صبر کنید");
-
-                    // حالا جستجو با AI رو انجام میدیم
-                    var results =
-                        await EmbeddingManager.Instance.SearchSimilarDiariesAsync(searchInputField.text, allMemories);
-                    UiManager.Instance.CloseWarningWindow();
-                    memoryManager.DisplaySearchResults(results);
-                /*}
-                catch (Exception e)
-                {
-                    UiManager.Instance.DisplayThisWarning("مشکلی رخ داد. کنسول را چک کنید.", "بسیار خب");
-                    print("Error : " + e);
-                    throw;
-                }*/
+                SearchInMemories(searchInputField.text, SearchType.AIMode);
             }
             else
             {
-                //جست و جوی معمولی
-                memoryManager.SearchInMemories(searchInputField.text);
+                SearchInMemories(searchInputField.text, SearchType.KeyWords);
             }
 
             RefreshSearchButtonIcon();
         }
 
+        public async void SearchInMemories(string targetText, SearchType searchType)
+        {
+            var allMemories = MemoryManager.Instance.GetAllMemories();
+            List<DiaryContainer> results;
+            switch (searchType)
+            {
+                case SearchType.AIMode:
+                    results = await MemorySearch.SearchMemoriesByEmbedding(targetText, allMemories);
+                    break;
+                default:
+                case SearchType.KeyWords:
+                    results = MemorySearch.SearchMemoriesByKeyword(targetText, allMemories);
+                    break;
+            }
+
+            memoryManager.DisplayThisMemories(results);
+        }
 
         private void ClearAndFocusOnInputField()
         {
@@ -99,7 +92,7 @@ namespace _Scripts.Search_Box
         {
             if (!aiModeSearch.isOn || (aiModeSearch.isOn && string.IsNullOrWhiteSpace(targetText)))
             {
-                memoryManager.SearchInMemories(targetText);
+                SearchInMemories(targetText, SearchType.KeyWords);
             }
 
             RefreshSearchButtonIcon();

@@ -9,10 +9,17 @@ namespace _Scripts.AI.Gemini
 {
     public class GeminiAIClient
     {
+        private string ApiUrl => _apiURL;
+        private readonly string _apiURL;
         private readonly string _apiKey;
         private readonly GeminiModel _model;
         private readonly HttpClient _httpClient;
         private Deboger _deboger => Deboger.Instance;
+
+        private bool IsEmbeddingModel =>
+            GeminiAiManager.Instance.GetThisModelName(_model) ==
+            GeminiAiManager.Instance.GetThisModelName(GeminiModel.TextEmbedding004);
+
         public GeminiAIClient(string apiKey, GeminiModel model)
         {
             _apiKey = apiKey;
@@ -24,13 +31,6 @@ namespace _Scripts.AI.Gemini
             string endpoint = IsEmbeddingModel ? ":embedContent" : ":generateContent";
             _apiURL = $"{baseUrl}{targetModel}{endpoint}?key={_apiKey}";
         }
-
-        private string ApiUrl => _apiURL;
-        private readonly string _apiURL;
-
-        private bool IsEmbeddingModel =>
-            GeminiAiManager.Instance.GetThisModelName(_model) ==
-            GeminiAiManager.Instance.GetThisModelName(GeminiModel.TextEmbedding004);
 
         // متد برای گرفتن embedding
         public async Task<float[]> SendEmbeddingRequestAsync(string text)
@@ -45,10 +45,8 @@ namespace _Scripts.AI.Gemini
 
             try
             {
-                //ارسال درخواست آماده شده به API
-                var response = await _httpClient.PostAsync(ApiUrl, content);
-                //اگر موفق نبود
-                if (!response.IsSuccessStatusCode)
+                var response = await _httpClient.PostAsync(ApiUrl, content); //ارسال درخواست آماده شده به API 
+                if (!response.IsSuccessStatusCode) //اگر موفق نبود 
                 {
                     _deboger.ForceLogError($"Embedding API error: {response.StatusCode}");
                     return null;
@@ -64,8 +62,7 @@ namespace _Scripts.AI.Gemini
             }
         }
 
-        // متد برای گرفتن پاسخ متنی معمولی
-        public async Task<string> SendPromptAsync(string prompt)
+        public async Task<string> SendPromptAsync(string prompt) // متد برای گرفتن پاسخ متنی معمولی 
         {
             string jsonPayload = JsonUtility.ToJson(new GeminiRequest(prompt));
             _deboger.Log(ApiUrl);
