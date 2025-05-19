@@ -43,7 +43,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.45f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.2f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;E:\_Projects\Unity\Unity AI API Project&quot; -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="E:\_Projects\Unity\Unity AI API Project" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -51,7 +51,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.45f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.2f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;E:\_Projects\Unity\Unity AI API Project&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="E:\_Projects\Unity\Unity AI API Project" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -102,7 +102,8 @@
       <workItem from="1745702514943" duration="20184000" />
       <workItem from="1745945023053" duration="15689000" />
       <workItem from="1746131197145" duration="8526000" />
-      <workItem from="1747594817180" duration="9602000" />
+      <workItem from="1747594817180" duration="10811000" />
+      <workItem from="1747655149233" duration="2834000" />
     </task>
     <servers />
   </component>

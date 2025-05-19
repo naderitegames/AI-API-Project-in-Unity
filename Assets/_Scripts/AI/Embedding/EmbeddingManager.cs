@@ -51,7 +51,7 @@ namespace _Scripts.AI.Embedding
 
             EmbeddingSearcher searcher = new EmbeddingSearcher();
             var results = searcher.FindBestMatches(allDiaries, queryEmbedding, topN);
-            print(results.Count + " this will be send");
+            //print(results.Count + " this will be send");
             return results;
         }
 

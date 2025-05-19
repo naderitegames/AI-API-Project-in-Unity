@@ -94,6 +94,7 @@ namespace _Scripts.Diary
                 {
                     _data.Remove(diary.GetDiary());
                 }
+
                 SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
                 _memoriesKeeper.RefreshDisplayers();
             }, "خیر", "بله");
@@ -165,7 +166,31 @@ namespace _Scripts.Diary
         {
             foreach (var target in MemoryDisplay.SelectedDisplayers)
             {
-                SummarizeThisMemoryThenSave(target.GetDiary());
+                try
+                {
+                    var diary = target.GetDiary();
+                    UiManager.Instance.DisplayThisWarning("از خلاصه سازی جمعی اطمینان دارید؟", () =>
+                    {
+                        if (!MemorySummarizer.CanSummarize(diary, _uiManager)) return;
+
+                        MemorySummarizer.TrySummarizeWithConfirmation(diary, _uiManager, summaryLineCount, (summary) =>
+                        {
+                            // ساخت کپی برای جایگزینی
+                            DiaryContainer updated = new DiaryContainer(diary.Description, diary.Title);
+                            updated.UpdateId(diary.ID);
+                            updated.UpdateSummary(summary);
+                            _data.UpdateMemoryByIdOrMakeNewOne(updated);
+                            SaveMemoriesAndRefresh();
+                        });
+                        UiManager.Instance.CloseWarningWindow();
+                    },"خیر","بله");
+                }
+                catch (Exception e)
+                {
+                    UiManager.Instance.DisplayThisWarning("مشکلی در خلاصه سازی رخ داد. کنسول را چک کنید", "بسیار خب");
+                    print("Error : " + e);
+                    throw;
+                }
             }
         }
 

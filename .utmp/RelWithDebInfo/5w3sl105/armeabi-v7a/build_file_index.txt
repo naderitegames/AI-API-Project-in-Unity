@@ -1,0 +1,2 @@
+E:\_Projects\Unity\Unity AI API Project\Library\Bee\Android\Prj\Mono2x\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+E:\_Projects\Unity\Unity AI API Project\Library\Bee\Android\Prj\Mono2x\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt

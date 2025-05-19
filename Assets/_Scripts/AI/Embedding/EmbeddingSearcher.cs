@@ -16,7 +16,7 @@ namespace _Scripts.Embedding
                 .Select(d =>
                 {
                     var score = EmbeddingCalculator.CosineSimilarity(d.Embedding, searchEmbedding);
-                    Debug.Log($"Diary: {d.Title.faConvert()} | Similarity: {score}");
+                    //Debug.Log($"Diary: {d.Title.faConvert()} | Similarity: {score}");
                     return (diary: d, score);
                 })
                 .OrderByDescending(x => x.score) // مرتب‌سازی از بیشترین به کمترین
