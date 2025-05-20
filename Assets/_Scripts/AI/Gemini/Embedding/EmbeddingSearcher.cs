@@ -9,7 +9,7 @@ namespace _Scripts.Embedding
 {
     public class EmbeddingSearcher
     {
-        public List<DiaryContainer> FindBestMatches(List<DiaryContainer> diaries, float[] searchEmbedding, int topN)
+        public List<DiaryContainer> FindBestMatches(List<DiaryContainer> diaries, float[] searchEmbedding)
         {
             var scoredDiaries = diaries
                 .Where(d => d.HasEmbedding())
@@ -20,7 +20,7 @@ namespace _Scripts.Embedding
                     return (diary: d, score);
                 })
                 .OrderByDescending(x => x.score) // مرتب‌سازی از بیشترین به کمترین
-                .Take(topN) // گرفتن topN خاطره
+                //.Take(2) // گرفتن 2 خاطره
                 .Select(x => x.diary)
                 .ToList();
 

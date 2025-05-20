@@ -13,7 +13,7 @@ namespace _Scripts.Chat
             // اول کانتکست دیاری ها
             PrepareSelectedDiaries();
             // پیام هارو اضافه کن
-            PrepareMessages();
+            PrepareMessages(); 
             // حرف های اضافه رو اضافه کن
             PrepareExtraWords();
             // آماده‌ی ارسال

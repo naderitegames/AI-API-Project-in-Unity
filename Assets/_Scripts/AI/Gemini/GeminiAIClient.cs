@@ -16,9 +16,16 @@ namespace _Scripts.AI.Gemini
         private readonly HttpClient _httpClient;
         private Deboger _deboger => Deboger.Instance;
 
-        private bool IsEmbeddingModel =>
-            GeminiAiManager.Instance.GetThisModelName(_model) ==
-            GeminiAiManager.Instance.GetThisModelName(GeminiModel.TextEmbedding004);
+        private bool IsEmbeddingModel
+        {
+            get
+            {
+                return GeminiAiManager.Instance.GetThisModelName(_model) ==
+                       GeminiAiManager.Instance.GetThisModelName(GeminiModel.TextEmbedding004) ||
+                       GeminiAiManager.Instance.GetThisModelName(_model) ==
+                       GeminiAiManager.Instance.GetThisModelName(GeminiModel.Gemini_embedding_exp_03_07);
+            }
+        }
 
         public GeminiAIClient(string apiKey, GeminiModel model)
         {

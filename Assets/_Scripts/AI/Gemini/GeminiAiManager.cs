@@ -5,13 +5,14 @@ namespace _Scripts.AI.Gemini
 {
     public enum GeminiModel
     {
-        Gemini2_0Flash,
+        Gemini2_0Flash=0,
         Gemini2_0FlashLite,
         Gemini1_5Pro,
         Gemini1_5Flash,
         Gemini1_5Flash8B,
+        Aqa,
         TextEmbedding004,
-        Aqa
+        Gemini_embedding_exp_03_07=7
     }
 
     public class GeminiAiManager : Singleton<GeminiAiManager>
@@ -30,6 +31,7 @@ namespace _Scripts.AI.Gemini
             { GeminiModel.Gemini1_5Flash, "models/gemini-1.5-flash" },
             { GeminiModel.Gemini1_5Flash8B, "models/gemini-1.5-flash-8b" },
             { GeminiModel.TextEmbedding004, "models/text-embedding-004" },
+            { GeminiModel.Gemini_embedding_exp_03_07, "models/gemini-embedding-exp-03-07" },
             { GeminiModel.Aqa, "models/aqa" }
         };
 

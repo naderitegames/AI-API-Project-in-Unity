@@ -13,7 +13,7 @@ namespace _Scripts.AI.Gemini.Embedding
 
         private void Awake()
         {
-            _aiClient = GeminiAiManager.Instance.GetNewAIClient(GeminiModel.TextEmbedding004);
+            _aiClient = GeminiAiManager.Instance.GetNewAIClient(GeminiModel.Gemini_embedding_exp_03_07);
         }
 
         async Task<float[]> GetEmbeddingAsync(string text)
@@ -33,8 +33,7 @@ namespace _Scripts.AI.Gemini.Embedding
             return embedding;
         }
 
-        public async Task<List<DiaryContainer>> SearchSimilarDiariesAsync(string query, List<DiaryContainer> allDiaries,
-            int topN = 2)
+        public async Task<List<DiaryContainer>> SearchSimilarDiariesAsync(string query, List<DiaryContainer> allDiaries)
         {
             if (string.IsNullOrWhiteSpace(query))
                 return new List<DiaryContainer>();
@@ -48,7 +47,7 @@ namespace _Scripts.AI.Gemini.Embedding
             }
 
             EmbeddingSearcher searcher = new EmbeddingSearcher();
-            var results = searcher.FindBestMatches(allDiaries, queryEmbedding, topN);
+            var results = searcher.FindBestMatches(allDiaries, queryEmbedding);
             //print(results.Count + " this will be send");
             return results;
         }
