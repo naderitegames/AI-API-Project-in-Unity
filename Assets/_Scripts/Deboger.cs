@@ -27,11 +27,6 @@ namespace _Scripts
             Debug.LogError(message);
         }
 
-        public void ForceLog(string message)
-        {
-            Debug.Log(message);
-        }
-
         public void ForceLogWarning(string message)
         {
             Debug.LogWarning(message);

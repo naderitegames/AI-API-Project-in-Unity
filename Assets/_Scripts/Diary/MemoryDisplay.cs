@@ -12,7 +12,11 @@ namespace _Scripts.Diary
 {
     public class MemoryDisplay : MonoBehaviour
     {
+        public static Action<List<MemoryDisplay>> OnSelectionsChanged;
+        static Action _onOtherContextMenuWillBeOpen;
+        public static List<MemoryDisplay> SelectedDisplayers = new List<MemoryDisplay>();
         private MemoryManager _manager => MemoryManager.Instance;
+        public DiaryContainer Diary => _diary;
 
         [SerializeField] Button targetOpeningButton;
         [SerializeField] Toggle targetSelectionToggle;
@@ -20,29 +24,20 @@ namespace _Scripts.Diary
         [SerializeField] RTLTextMeshPro titlePlace;
         [SerializeField] RTLTextMeshPro lastModifiedTimePlace;
         [SerializeField] ContextMenu contextMenu;
+        [SerializeField] Image targetPinnedIcon;
 
-        [SerializeField] private Image targetPinnedIcon;
-        //[SerializeField] private int charLimitationForDescription;
-        //[SerializeField] private int charLimitationForTitle;
-
-        public static List<MemoryDisplay> SelectedDisplayers = new List<MemoryDisplay>();
-        public bool IsSelected => isSelected;
-
-        private bool isSelected;
+        private bool _isSelected;
         private DiaryContainer _diary;
-
-        static Action OnOtherContextMenuWillBeOpen;
-        public static Action<List<MemoryDisplay>> OnSelectionsChanged;
 
         private void OnEnable()
         {
             contextMenu.SetActive(false);
-            OnOtherContextMenuWillBeOpen += OnOnOtherContextMenuWillBeOpen;
+            _onOtherContextMenuWillBeOpen += OnOnOtherContextMenuWillBeOpen;
             targetOpeningButton.onClick.AddListener(TryOpeningThisMemory);
             OnSelectionsChanged += OnOnSelectionsChanged;
             targetSelectionToggle.onValueChanged.AddListener(ChangeSelectionStateTo);
             RefreshMemory();
-            isSelected = false;
+            _isSelected = false;
             targetSelectionToggle.isOn = false;
             targetSelectionToggle.gameObject.SetActive(false);
             contextMenu.SetActive(false);
@@ -50,7 +45,7 @@ namespace _Scripts.Diary
 
         private void OnDisable()
         {
-            OnOtherContextMenuWillBeOpen -= OnOnOtherContextMenuWillBeOpen;
+            _onOtherContextMenuWillBeOpen -= OnOnOtherContextMenuWillBeOpen;
             targetOpeningButton.onClick.RemoveListener(TryOpeningThisMemory);
             OnSelectionsChanged -= OnOnSelectionsChanged;
             targetSelectionToggle.onValueChanged.RemoveListener(ChangeSelectionStateTo);
@@ -66,16 +61,11 @@ namespace _Scripts.Diary
 
         public void SetUp(DiaryContainer diary)
         {
-            UpdateMemory(diary);
-        }
-
-        public void UpdateMemory(DiaryContainer diary)
-        {
             _diary = diary;
             targetPinnedIcon.gameObject.SetActive(_diary.IsPinned);
             RefreshMemory();
         }
-
+        
         void RefreshMemory()
         {
             if (_diary != null)
@@ -87,16 +77,17 @@ namespace _Scripts.Diary
             }
         }
 
+        // use with buttons click event in inspector ...
         public void OpenContextMenu()
         {
-            OnOtherContextMenuWillBeOpen?.Invoke();
+            _onOtherContextMenuWillBeOpen?.Invoke();
             contextMenu.SetActive(true);
         }
 
         public void DeleteThisMemory()
         {
             UiManager.Instance.DisplayThisWarning("از حذف اطمینان دارید؟!",
-                () => { _manager.RemoveFromMemories(_diary); }, "خیر", "بله");
+                () => { _manager.RemoveFromAllDiaries(_diary); }, "خیر", "بله");
         }
 
         public void TogglePinState()
@@ -111,24 +102,25 @@ namespace _Scripts.Diary
 
         public void TryEditingThisMemory()
         {
-            UiManager.Instance.DisplayThisWarning("از ویرایش خاطره اطمینان دارید؟!",
-                () => { UiManager.Instance.OpenNewDiaryEditWindow(_diary); }, "خیر", "بله");
+            UiManager.Instance.OpenNewDiaryEditWindow(_diary);
+            //UiManager.Instance.DisplayThisWarning("از ویرایش خاطره اطمینان دارید؟!",
+            //    () => { UiManager.Instance.OpenNewDiaryEditWindow(_diary); }, "خیر", "بله");
         }
 
-        public void TryOpeningThisMemory()
+        private void TryOpeningThisMemory()
         {
             UiManager.Instance.OpenNewDiaryEditWindow(_diary);
         }
 
-        public void ChangeSelectionStateTo()
+        public void ToggleSelectionState()
         {
-            ChangeSelectionStateTo(!isSelected);
+            ChangeSelectionStateTo(!_isSelected);
         }
 
-        public void ChangeSelectionStateTo(bool b)
+        private void ChangeSelectionStateTo(bool b)
         {
-            isSelected = b;
-            if (isSelected)
+            _isSelected = b;
+            if (_isSelected)
             {
                 // Just a double check for make sure not dealing with null ...
                 if (!SelectedDisplayers.Contains(this))
@@ -148,12 +140,13 @@ namespace _Scripts.Diary
             OnSelectionsChanged?.Invoke(SelectedDisplayers);
         }
 
-        private void OnOnSelectionsChanged(List<MemoryDisplay> selecteds)
+        private void OnOnSelectionsChanged(List<MemoryDisplay> selected)
         {
-            if (selecteds.Count >= 1)
+            // Display selection state Toggle or not
+            if (selected.Count >= 1)
             {
                 targetSelectionToggle.gameObject.SetActive(true);
-                targetSelectionToggle.isOn = isSelected;
+                targetSelectionToggle.isOn = _isSelected;
             }
             else
             {
@@ -163,19 +156,9 @@ namespace _Scripts.Diary
 
         public void ChatWithAI()
         {
-            isSelected = true;
+            _isSelected = true;
             SelectedDisplayers.Add(this);
             UiManager.Instance.DisplayChatForSelectedDiaries();
-        }
-
-        public DiaryContainer GetDiary()
-        {
-            return _diary;
-        }
-
-        public static void ClearSelectedDiaries()
-        {
-            SelectedDisplayers.Clear();
         }
     }
 }

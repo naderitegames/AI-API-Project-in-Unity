@@ -73,7 +73,7 @@ namespace _Scripts.Search_Box
                     return;
                 }
 
-                var allMemories = MemoryManager.Instance.GetAllMemories();
+                var allMemories = MemoryManager.Instance.AllMemories;
                 List<DiaryContainer> results;
                 switch (searchType)
                 {

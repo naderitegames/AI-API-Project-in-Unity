@@ -64,7 +64,7 @@ namespace _Scripts.UI.Windows
 
         private void SummarizeDescriptionNow()
         {
-            _targetDiary.UpdateDiaryDescription(descriptopnInputField.text);
+            _targetDiary.UpdateDescription(descriptopnInputField.text);
             MemoryManager.Instance.SummarizeThisMemoryThenSave(_targetDiary, (t) =>
             {
                 _targetDiary = t;
@@ -143,9 +143,8 @@ namespace _Scripts.UI.Windows
         void ApplyUserChangesToTargetMemory()
         {
             _targetDiary.UpdateTitle(titleInputField.text);
-            _targetDiary.UpdateDiaryDescription(descriptopnInputField.text);
+            _targetDiary.UpdateDescription(descriptopnInputField.text);
             _targetDiary.UpdateSummary(summaryInputField.text);
-            _targetDiary.SetLastUpdateTime(DateTime.Now);
         }
 
         void OnOnInputFieldsChange(string arg0)

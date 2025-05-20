@@ -1166,7 +1166,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7517787046243414874}
         m_TargetAssemblyTypeName: _Scripts.MemoryDisplay, Assembly-CSharp
-        m_MethodName: ChangeSelectionStateTo
+        m_MethodName: ToggleSelectionState
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

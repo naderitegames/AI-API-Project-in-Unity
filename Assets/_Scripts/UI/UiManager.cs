@@ -121,7 +121,7 @@ namespace _Scripts.UI
             List<DiaryContainer> targetDiaries = new List<DiaryContainer>();
             foreach (var target in MemoryDisplay.SelectedDisplayers)
             {
-                targetDiaries.Add(target.GetDiary());
+                targetDiaries.Add(target.Diary);
             }
             print("Selected Diaries count: " + targetDiaries.Count);
             chatWithAiManager.PrepareForChat(targetDiaries);

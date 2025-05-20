@@ -7,77 +7,33 @@ using _Scripts.Search_Box;
 using _Scripts.UI;
 using RTLTMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Scripts.Diary
 {
     public class MemoryManager : Singleton<MemoryManager>
     {
+        public List<DiaryContainer> AllMemories => _data.Diaries;
+        [SerializeField] int summaryLineCount;
         [SerializeField] UiManager _uiManager;
-        [SerializeField] MemoriesKeeper _memoriesKeeper;
-        private GeminiAiManager AiManager => GeminiAiManager.Instance;
-        [SerializeField] private int summaryLineCount;
-        MemoryAppData _data = new MemoryAppData();
-        private string _memoryDataPath;
+        [SerializeField] DiariesHolder diariesHolder;
+        DiariesData _data = new();
+        string _diariesStorePath;
 
         private void Awake()
         {
-            _memoryDataPath = Application.persistentDataPath + "/MemoriesData.mData";
+            _diariesStorePath = Application.persistentDataPath + "/MemoriesData.mData";
             LoadMemories();
         }
 
-        public List<DiaryContainer> GetAllMemories()
-        {
-            return _data.Memories;
-        }
 
-        /*public void CreateMemoryFromInput(MemoryInput memoryInput)
+        public void RemoveFromAllDiaries(DiaryContainer diary)
         {
             try
             {
-                var description = memoryInput.Description;
-                var title = memoryInput.Ttle;
-                if (title == "")
-                {
-                    title = "خاطره شماره " + _data.Memories.Count;
-                }
-
-                if (description == "")
-                {
-                    throw new NoNullAllowedException(" Memory description can not be empty");
-                }
-
-                memoryInput.RefreshInputs();
-                AddToMemoriesAndSave(new DiaryContainer(description, title));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        void AddToMemoriesAndSave(DiaryContainer diary)
-        {
-            try
-            {
-                print(diary.Description);
-                _data.AddMemory(diary);
-                SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }*/
-
-        public void RemoveFromMemories(DiaryContainer diary)
-        {
-            try
-            {
-                _data.Remove(diary);
-                SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
-                _memoriesKeeper.RefreshDisplayers();
+                _data.RemoveDiary(diary);
+                SaveLoadSystem.Save(_data, _diariesStorePath, () => { }, (e) => throw e);
+                diariesHolder.DisplayDiaries();
             }
             catch (Exception e)
             {
@@ -92,26 +48,26 @@ namespace _Scripts.Diary
             {
                 foreach (var diary in MemoryDisplay.SelectedDisplayers)
                 {
-                    _data.Remove(diary.GetDiary());
+                    _data.RemoveDiary(diary.Diary);
                 }
 
-                SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
-                _memoriesKeeper.RefreshDisplayers();
+                SaveLoadSystem.Save(_data, _diariesStorePath, () => { }, (e) => throw e);
+                diariesHolder.DisplayDiaries();
             }, "خیر", "بله");
         }
 
         public void ToggleThisMemoryPinState(DiaryContainer diary)
         {
             GetMemoryById(diary).SetPinStateTo(!diary.IsPinned);
-            SaveLoadSystem.Save(_data, _memoryDataPath, () => { }, (e) => throw e);
-            _memoriesKeeper.RefreshDisplayers();
+            SaveLoadSystem.Save(_data, _diariesStorePath, () => { }, (e) => throw e);
+            diariesHolder.DisplayDiaries();
         }
 
         void LoadMemories()
         {
             try
             {
-                SaveLoadSystem.Load<MemoryAppData>(_memoryDataPath,
+                SaveLoadSystem.Load<DiariesData>(_diariesStorePath,
                     (d) => { _data = d; },
                     () => { },
                     SaveMemoriesAndRefresh, // it will save an empty file (with one sample diary)
@@ -126,16 +82,14 @@ namespace _Scripts.Diary
 
         public void DisplayThisMemories(List<DiaryContainer> targets)
         {
-            //if (targets is { Count: > 0 })
-                _memoriesKeeper.RefreshDisplayers(targets);
-            //if (targets == null || targets.Count == 0)
-            //    _memoriesKeeper.RefreshDisplayers();
+            diariesHolder.DisplayDiaries(targets);
         }
 
         public void RefreshMemoriesList()
         {
-            _memoriesKeeper.RefreshDisplayers();
+            diariesHolder.DisplayDiaries();
         }
+
         public void SummarizeThisMemoryThenSave(DiaryContainer diary, Action<DiaryContainer> onComplete = null)
         {
             try
@@ -159,7 +113,7 @@ namespace _Scripts.Diary
                 {
                     foreach (var target in MemoryDisplay.SelectedDisplayers)
                     {
-                        TryGetSummarizeForThisDiary(target.GetDiary());
+                        TryGetSummarizeForThisDiary(target.Diary);
                     }
                 });
             }
@@ -188,17 +142,17 @@ namespace _Scripts.Diary
 
         private void SaveMemoriesAndRefresh()
         {
-            SaveLoadSystem.Save(_data, _memoryDataPath,
+            SaveLoadSystem.Save(_data, _diariesStorePath,
                 () => Debug.Log("✅ خاطره ذخیره شد."),
                 (e) => Debug.LogError("❌ خطا در ذخیره‌سازی: " + e.Message));
 
-            _memoriesKeeper.RefreshDisplayers();
+            diariesHolder.DisplayDiaries();
         }
 
 
         DiaryContainer GetMemoryById(DiaryContainer target)
         {
-            return _data.Memories.FirstOrDefault(m => m.ID == target.ID);
+            return _data.Diaries.FirstOrDefault(m => m.ID == target.ID);
         }
 
         public void UpdateThisEditedMemoryIfExists(DiaryContainer targetDiary)
