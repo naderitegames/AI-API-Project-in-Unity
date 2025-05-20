@@ -5457,6 +5457,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3009407940719956889, guid: edd29866df1a83547a4a819d3dd172ca, type: 3}
+      propertyPath: diariesHolder
+      value: 
+      objectReference: {fileID: 802293827}
+    - target: {fileID: 3009407940719956889, guid: edd29866df1a83547a4a819d3dd172ca, type: 3}
       propertyPath: _memoriesKeeper
       value: 
       objectReference: {fileID: 802293827}
