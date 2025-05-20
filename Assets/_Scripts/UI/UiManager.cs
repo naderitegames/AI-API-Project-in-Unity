@@ -118,14 +118,14 @@ namespace _Scripts.UI
 
         public void DisplayChatForSelectedDiaries()
         {
-            ActivatePanel(WindowType.Chat);
             List<DiaryContainer> targetDiaries = new List<DiaryContainer>();
             foreach (var target in MemoryDisplay.SelectedDisplayers)
             {
                 targetDiaries.Add(target.GetDiary());
             }
-
+            print("Selected Diaries count: " + targetDiaries.Count);
             chatWithAiManager.PrepareForChat(targetDiaries);
+            ActivatePanel(WindowType.Chat);
         }
 
         public void CloseWarningWindow()

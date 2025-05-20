@@ -24,34 +24,33 @@ namespace _Scripts.Chat
             _selectedDiaryContainers = targetDiaries;
         }
 
-        public void AddMessageToChat(ChatMessage newMessage)
-        {
-            _messages.Add(newMessage);
-            chatManagerUI.AddThisMessageToChat(newMessage);
-        }
-
         public async void TrySendingMessageToAi(string userInput)
         {
             if (string.IsNullOrWhiteSpace(userInput)) return;
 
             var userMessage = new ChatMessage(SenderType.User, userInput);
-            AddMessageToChat(userMessage);
+            AddMessageToChatHistory(userMessage);
 
             try
             {
+                print(_selectedDiaryContainers.Count + " count before send");
                 string prompt = ChatPromptBuilder.BuildPrompt(_selectedDiaryContainers, _messages);
 
                 string aiResponse = await _geminiAiManager.DefaultAiClient.SendPromptAsync(prompt);
 
                 var aiMessage = new ChatMessage(SenderType.AI, aiResponse);
-                AddMessageToChat(aiMessage);
+                AddMessageToChatHistory(aiMessage);
             }
             catch (System.Exception ex)
             {
                 Debug.LogError("Error sending message to AI: " + ex.Message);
             }
         }
-        
+        public void AddMessageToChatHistory(ChatMessage newMessage)
+        {
+            _messages.Add(newMessage);
+            chatManagerUI.AddThisMessageToChat(newMessage);
+        }
         public void ResetChat()
         {
             _messages.Clear();

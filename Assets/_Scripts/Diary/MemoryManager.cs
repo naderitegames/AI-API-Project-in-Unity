@@ -126,12 +126,16 @@ namespace _Scripts.Diary
 
         public void DisplayThisMemories(List<DiaryContainer> targets)
         {
-            if (targets is { Count: > 0 })
+            //if (targets is { Count: > 0 })
                 _memoriesKeeper.RefreshDisplayers(targets);
-            if (targets == null || targets.Count == 0)
-                _memoriesKeeper.RefreshDisplayers();
+            //if (targets == null || targets.Count == 0)
+            //    _memoriesKeeper.RefreshDisplayers();
         }
 
+        public void RefreshMemoriesList()
+        {
+            _memoriesKeeper.RefreshDisplayers();
+        }
         public void SummarizeThisMemoryThenSave(DiaryContainer diary, Action<DiaryContainer> onComplete = null)
         {
             try

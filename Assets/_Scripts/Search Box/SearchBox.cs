@@ -65,20 +65,33 @@ namespace _Scripts.Search_Box
 
         public async void SearchInMemories(string targetText, SearchType searchType)
         {
-            var allMemories = MemoryManager.Instance.GetAllMemories();
-            List<DiaryContainer> results;
-            switch (searchType)
+            try
             {
-                case SearchType.AIMode:
-                    results = await MemorySearch.SearchMemoriesByEmbedding(targetText, allMemories);
-                    break;
-                default:
-                case SearchType.KeyWords:
-                    results = MemorySearch.SearchMemoriesByKeyword(targetText, allMemories);
-                    break;
-            }
+                if (string.IsNullOrWhiteSpace(targetText))
+                {
+                    memoryManager.RefreshMemoriesList();
+                    return;
+                }
 
-            memoryManager.DisplayThisMemories(results);
+                var allMemories = MemoryManager.Instance.GetAllMemories();
+                List<DiaryContainer> results;
+                switch (searchType)
+                {
+                    case SearchType.AIMode:
+                        results = await MemorySearch.SearchMemoriesByEmbedding(targetText, allMemories);
+                        break;
+                    default:
+                    case SearchType.KeyWords:
+                        results = MemorySearch.SearchMemoriesByKeyword(targetText, allMemories);
+                        break;
+                }
+
+                memoryManager.DisplayThisMemories(results);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("error :" + e);
+            }
         }
 
         private void ClearAndFocusOnInputField()

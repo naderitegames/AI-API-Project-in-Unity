@@ -13,23 +13,24 @@ namespace _Scripts.Diary
     public class MemoryDisplay : MonoBehaviour
     {
         private MemoryManager _manager => MemoryManager.Instance;
-        
+
         [SerializeField] Button targetOpeningButton;
         [SerializeField] Toggle targetSelectionToggle;
         [SerializeField] RTLTextMeshPro descriptionPlace;
         [SerializeField] RTLTextMeshPro titlePlace;
         [SerializeField] RTLTextMeshPro lastModifiedTimePlace;
         [SerializeField] ContextMenu contextMenu;
+
         [SerializeField] private Image targetPinnedIcon;
         //[SerializeField] private int charLimitationForDescription;
         //[SerializeField] private int charLimitationForTitle;
-        
+
         public static List<MemoryDisplay> SelectedDisplayers = new List<MemoryDisplay>();
         public bool IsSelected => isSelected;
 
         private bool isSelected;
         private DiaryContainer _diary;
-        
+
         static Action OnOtherContextMenuWillBeOpen;
         public static Action<List<MemoryDisplay>> OnSelectionsChanged;
 
@@ -134,7 +135,6 @@ namespace _Scripts.Diary
                 {
                     SelectedDisplayers.Add(this);
                     contextMenu.SetActive(false);
-                    OnSelectionsChanged?.Invoke(SelectedDisplayers);
                 }
             }
             else
@@ -142,9 +142,10 @@ namespace _Scripts.Diary
                 if (SelectedDisplayers.Contains(this))
                 {
                     SelectedDisplayers.Remove(this);
-                    OnSelectionsChanged?.Invoke(SelectedDisplayers);
                 }
             }
+
+            OnSelectionsChanged?.Invoke(SelectedDisplayers);
         }
 
         private void OnOnSelectionsChanged(List<MemoryDisplay> selecteds)

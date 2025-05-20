@@ -12,8 +12,8 @@ namespace _Scripts.Search_Box
     {
         public static List<DiaryContainer> SearchMemoriesByKeyword(string keyword, List<DiaryContainer> targetMemories)
         {
-            if (string.IsNullOrWhiteSpace(keyword))
-                return new List<DiaryContainer>();
+            /*if (string.IsNullOrWhiteSpace(keyword))
+                return new List<DiaryContainer>();*/
             keyword = keyword.ToLower();
             return targetMemories
                 .Where(memory =>
