@@ -5642,6 +5642,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6358759425601834289, guid: b04962314f0645947ac83a237d6f18cb, type: 3}
+      propertyPath: apiKey
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9013293828703348688, guid: b04962314f0645947ac83a237d6f18cb, type: 3}
       propertyPath: m_Name
       value: Gemeni AI Manager
